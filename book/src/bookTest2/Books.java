@@ -1,12 +1,12 @@
-package books;
+package bookTest2;
 
-public class books {
+public class Books {
 	private int Id;    
 	private String Title; 
 	private String Publisher; 
 	private String Year; 
 	private int Price;
-	public books(int id, String title, String publisher, String year, int price) {
+	public Books(int id, String title, String publisher, String year, int price) {
 		super();
 		Id = id;
 		Title = title;
