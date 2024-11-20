@@ -35,6 +35,9 @@ public class BooksMain implements BookMenuTitle{
 				empSalaryPrint();
 				break;
 			case 6:
+				empSalaryUp();
+				break;
+			case 7:
 				exitFlag = true;
 				break;
 			default:
@@ -42,6 +45,25 @@ public class BooksMain implements BookMenuTitle{
 			}
 		}
 		System.out.println("The end");
+	}
+	//함수로사용
+private static void empSalaryUp() throws SQLException {
+	System.out.println("조회할 책 ID를 입력해주세요.");
+	System.out.print(">>");
+	int Id = Integer.parseInt(scan.nextLine());
+	System.out.println("출력중...");
+	Connection con = null;
+	CallableStatement cstmt =null;
+	Statement stmt= null;
+	con=DBConnection.dbCon();
+	cstmt=con.prepareCall("{? = call books_fuc(?)}");
+	cstmt.registerOutParameter(1, Types.VARCHAR);
+	cstmt.setInt(2, Id);
+	//출력될 데이터값으로 3번을 바인딩
+	int rs = cstmt.executeUpdate();
+	String msg = cstmt.getString(1);
+	System.out.println(msg);
+	DBConnection.dbClose(con, cstmt);
 	}
 //선택한 부서의 월급을 인상하는 뭐시기
 	private static void empSalaryPrint() throws SQLException {
@@ -153,7 +175,7 @@ public class BooksMain implements BookMenuTitle{
 	}
 
 	private static void printMenu() {
-		System.out.println("Books Menu(1.출력, 2.입력, 3.수정  4.삭제 5.가격인상 6.종료)");
+		System.out.println("Books Menu(1.출력, 2.입력, 3.수정  4.삭제 5.가격인상 6.조회 7.종료)");
 		System.out.print(">>");
 	}
 	private static void booksListPrint(ArrayList<Books> booksList) {
