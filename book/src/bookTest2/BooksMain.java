@@ -1,10 +1,12 @@
 package bookTest2;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,6 +32,9 @@ public class BooksMain implements BookMenuTitle{
 				booksDelete();
 				break;
 			case 5:
+				empSalaryPrint();
+				break;
+			case 6:
 				exitFlag = true;
 				break;
 			default:
@@ -37,6 +42,31 @@ public class BooksMain implements BookMenuTitle{
 			}
 		}
 		System.out.println("The end");
+	}
+//선택한 부서의 월급을 인상하는 뭐시기
+	private static void empSalaryPrint() throws SQLException {
+		System.out.println("책 ID를 입력해주세요.");
+		System.out.print(">>");
+		int Id = Integer.parseInt(scan.nextLine());
+		System.out.println("인상금액을 입력해주세요.");
+		System.out.print(">>");
+		int increPct = Integer.parseInt(scan.nextLine());
+		System.out.println("변경중...");
+		Connection con = null;
+		CallableStatement cstmt =null;
+		Statement stmt= null;
+		con=DBConnection.dbCon();
+		cstmt=con.prepareCall("{call book_price_proc(?,?,?)}");
+		cstmt.setInt(1, Id);
+		cstmt.setInt(2, increPct);
+		//출력될 데이터값으로 3번을 바인딩
+		cstmt.registerOutParameter(3, Types.VARCHAR);
+		int rs = cstmt.executeUpdate();
+		String msg = cstmt.getString(3);
+		System.out.println(msg);
+		DBConnection.dbClose(con, cstmt);
+		
+		
 	}
 
 	// 삭제
@@ -123,10 +153,9 @@ public class BooksMain implements BookMenuTitle{
 	}
 
 	private static void printMenu() {
-		System.out.println("Books Menu(1.출력, 2.입력, 3.수정  4.삭제  5.종료)");
+		System.out.println("Books Menu(1.출력, 2.입력, 3.수정  4.삭제 5.가격인상 6.종료)");
 		System.out.print(">>");
 	}
-
 	private static void booksListPrint(ArrayList<Books> booksList) {
 		for (Books books : booksList) {
 			System.out.println(books.toString());
