@@ -45,6 +45,7 @@ public class StudentMVCProject implements StudentInterface {
 				break;
 			case FIN:
 				exitFlag = true;
+				System.out.println("-종료-");
 				break;
 			case GARBAGE:
 				StudentRegistManeger.studentGarbage();

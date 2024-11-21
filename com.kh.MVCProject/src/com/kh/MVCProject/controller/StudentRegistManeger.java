@@ -17,7 +17,6 @@ public class StudentRegistManeger {
 	}
 
 	// 학생을 insert하는 함수
-	
 	public static void studentInsert2() throws SQLException {
 		System.out.print("학생 이름 : ");
 		String name = sc.nextLine();
@@ -49,11 +48,11 @@ public class StudentRegistManeger {
 		System.out.print("수정할 학생 생일(yyyy/mm/dd 형태로 입력해주세요) : ");
 		String birth = sc.nextLine();
 		System.out.print("수정할 학생 국어 : ");
-		int kor = Integer.parseInt(sc.nextLine());
+		int kor = gradePattern();
 		System.out.print("수정할 학생 수학 : ");
-		int math = Integer.parseInt(sc.nextLine());
+		int math = gradePattern();
 		System.out.print("수정할 학생 영어 : ");
-		int eng = Integer.parseInt(sc.nextLine());
+		int eng = gradePattern();
 		// 수정전의 학생정보를 코드를 받아서 출력
 		StudentPrint.printStudentByCode(code);
 		System.out.println("▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲수정전▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲");
@@ -64,6 +63,7 @@ public class StudentRegistManeger {
 		// 바뀐 정보를 출력
 		StudentPrint.printStudentByCode(code);
 	}
+	// 학생을 delete 하는 함수
 
 	// 학생을 delete하는 함수
 	public static void studentDelete() throws SQLException {
@@ -78,6 +78,7 @@ public class StudentRegistManeger {
 		boolean flag = StudentDAO.deleteStudentDB(svo);
 		System.out.println((flag == true) ? "삭제 완료" : "삭제 실패");
 	}
+	//입력한 순서로 정렬해주는 함수(1.code,2.name,3.birth,4.grade)
 
 	// 받은 조건대로 정렬해서 출력해주는 함수
 	public static void studentRankUp() throws SQLException {
@@ -100,12 +101,14 @@ public class StudentRegistManeger {
 		System.out.println("출력중입니다...");
 		StudentPrint.printStudent(StudentDAO.returnListOrderNum(num));
 	}
+	//랜덤으로 insert 해주는 함수
 
 	// 학생을 랜덤 조건으로 insert해주는 함수
 	public static void studentInsertRandom() throws SQLException {
 		boolean flag = StudentDAO.insertStudentDBRandom();
 		System.out.println((flag == true) ? "추가 성공" : "추가 실패");
 	}
+	//학생 찾아서 출력해주는 함수
 
 	// 학생을 찾아서 출력해주는 함수
 	public static void studentFind() throws SQLException {
@@ -116,6 +119,7 @@ public class StudentRegistManeger {
 		StudentPrint.printStudentByCode(code);
 		System.out.println("=================================================================================");
 	}
+	//휴지통 관리 함수
 
 	// 휴지통 기능 함수
 	public static void studentGarbage() throws SQLException {
@@ -128,6 +132,7 @@ public class StudentRegistManeger {
 			System.out.println((flag == true) ? ("휴지통 비우기 완료") : ("휴지통 비우기 실패"));
 		}
 	}
+	// 코드 알맞게 반환해주는 함수
 
 	// 추가기능 함수들
 
