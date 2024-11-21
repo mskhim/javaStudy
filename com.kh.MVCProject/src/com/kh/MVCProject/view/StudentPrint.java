@@ -24,11 +24,9 @@ public class StudentPrint {
 
 
 	// code 를 받으면 해당 코드에 대한 학생정보를 출력해주는 함수
-	public static void printStudentByCode(int findCode) throws SQLException {
-		StudentVO svo = new StudentVO();
-		svo.setCode(findCode);
-		StudentVO svo2 = StudentDAO.returnStudentVOByCode(svo);
+	public static void printStudentByCode(StudentVO svo) throws SQLException {
+		svo = StudentDAO.returnStudentVOByCode(svo);
 		System.out.println(StudentVO.getHeader());
-		System.out.println(svo2.toString());
+		System.out.println(svo.toString());
 	}
 }
