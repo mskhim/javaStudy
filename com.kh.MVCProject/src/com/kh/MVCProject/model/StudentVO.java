@@ -1,6 +1,6 @@
-package studentHome;
+package com.kh.MVCProject.model;
 
-public class student {
+public class StudentVO {
 private int	code;
 private String name;
 private String birth;
@@ -8,10 +8,13 @@ private int	kor;
 private int	math;
 private int	eng;
 private int	total;
-private int	avg;
+private double	avg;
 private int	rank;
 
-public student(int code, String name, String birth, int kor, int math, int eng, int total, int avg, int rank) {
+public StudentVO() {
+}
+
+public StudentVO(int code, String name, String birth, int kor, int math, int eng, int total, double avg, int rank) {
 	super();
 	this.code = code;
 	this.name = name;
@@ -23,7 +26,7 @@ public student(int code, String name, String birth, int kor, int math, int eng, 
 	this.avg = avg;
 	this.rank = rank;
 }
-public student(int code, String name, String birth, int kor, int math, int eng) {
+public StudentVO(int code, String name, String birth, int kor, int math, int eng) {
 	super();
 	this.code = code;
 	this.name = name;
@@ -57,13 +60,12 @@ public int getTotal() {
 public void setTotal(int total) {
 	this.total = total;
 }
-public int getAvg() {
+public double getAvg() {
 	return avg;
 }
-public void setAvg(int avg) {
+public void setAvg(double avg) {
 	this.avg = avg;
 }
-
 
 public int getRank() {
 	return rank;
@@ -100,7 +102,7 @@ public void setkor(int kor) {
 public String toString() {
     // Data row only
     return String.format(
-        "%-10d %-15s %-10s %5d %5d %5d %7d %7d %5d",
+        "%-10d %-15s %-10s %5d %5d %5d %7d %7.2f %5d",
         code, name, birth, kor, math, eng, total, avg, rank
     );
 }

@@ -1,6 +1,6 @@
-package studentHome;
+package com.kh.MVCProject.view;
 
-public interface StudentNumInt {
+public interface StudentInterface {
 	final int PRINT=1;
 	final int INSERT=2;
 	final int UPDATE=3;
@@ -15,4 +15,5 @@ public interface StudentNumInt {
 	int NAME=2;
 	int BIRTH=3;
 	int GRADE=4;
+
 }
