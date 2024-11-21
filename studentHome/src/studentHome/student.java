@@ -98,8 +98,19 @@ public void setkor(int kor) {
 }
 @Override
 public String toString() {
-	return "student [code=" + code + ", name=" + name + ", birth=" + birth + ", kor=" + kor + ", math=" + math
-			+ ", eng=" + eng + ", total=" + total + ", avg=" + avg + ", rank=" + rank + "]";
+    // Data row only
+    return String.format(
+        "%-10d %-15s %-10s %5d %5d %5d %7d %7d %5d",
+        code, name, birth, kor, math, eng, total, avg, rank
+    );
+}
+
+// Static method for header
+public static String getHeader() {
+    return String.format(
+        "%-10s %-15s %-10s %5s %5s %5s %7s %7s %5s",
+        "Code", "Name", "Birth", "Kor", "Math", "Eng", "Total", "Avg", "Rank"
+    );
 }
 
 

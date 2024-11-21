@@ -23,6 +23,35 @@ public static Connection dbCon() {
 	return con;
 }
 
+public static void dbClose(Connection con, Statement stmt,Statement stmt2, ResultSet rs) {
+	if (con!=null) {
+		try {
+			con.close();
+		} catch (SQLException e) {
+			System.out.println(e.toString()); 
+		}
+	}
+	if (stmt!=null) {
+		try {
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		}
+	}if (stmt2!=null) {
+		try {
+			stmt2.close();
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		}
+	}
+	if (rs!=null) {
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		}
+	}
+}
 public static void dbClose(Connection con, Statement stmt, ResultSet rs) {
 	if (con!=null) {
 		try {
@@ -38,6 +67,7 @@ public static void dbClose(Connection con, Statement stmt, ResultSet rs) {
 			System.out.println(e.toString());
 		}
 	}
+	
 	if (rs!=null) {
 		try {
 			rs.close();
