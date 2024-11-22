@@ -27,19 +27,20 @@ public class StudentRegistManeger {
 		System.out.println("학생정보를 수정합니다. 수정할 학생의 코드를 입력해주세요.");
 		System.out.print(">>");
 		// 코드 번호를 넣으면 올바른 코드가 나올때까지 반복해서 반환해주는함수
-		int code = returnCode();
+		StudentVO svo = returnCode();
 		System.out.println("====================================수정할 학생정보==================================");
-		StudentPrint.printStudentByCode(code);
+		StudentPrint.printStudentByCode(svo);
 		System.out.println("=================================================================================");
-		StudentVO svo = writeStudentVO();
+		StudentVO svo2 = writeStudentVO();
+		svo2.setCode(svo.getCode());
 		// 수정전의 학생정보를 코드를 받아서 출력
-		StudentPrint.printStudentByCode(code);
+		StudentPrint.printStudentByCode(svo);
 		System.out.println("▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲수정전▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲");
 		System.out.println("▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼수정후▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼");
 		// 수정할 학생의 점보를 svo에 담아서 업데이트
-		StudentDAO.updateStudentDB(svo);
+		StudentDAO.updateStudentDB(svo2);
 		// 바뀐 정보를 출력
-		StudentPrint.printStudentByCode(code);
+		StudentPrint.printStudentByCode(svo2);
 	}
 	// 학생을 delete 하는 함수
 
@@ -47,11 +48,9 @@ public class StudentRegistManeger {
 	public static void studentDelete() throws SQLException {
 		System.out.println("학생정보를 삭제합니다. 삭제할 학생의 코드를 입력해주세요.");
 		System.out.print(">>");
-		int code = returnCode();
-		StudentVO svo = new StudentVO();
-		svo.setCode(code);
+		StudentVO svo = returnCode();
 		System.out.println("====================================삭제할 학생정보==================================");
-		StudentPrint.printStudentByCode(code);
+		StudentPrint.printStudentByCode(svo);
 		System.out.println("=================================================================================");
 		boolean flag = StudentDAO.deleteStudentDB(svo);
 		System.out.println((flag == true) ? "삭제 완료" : "삭제 실패");
@@ -92,9 +91,9 @@ public class StudentRegistManeger {
 	public static void studentFind() throws SQLException {
 		System.out.println("학생정보를 조회합니다. 조회할 학생의 코드를 입력해주세요.");
 		System.out.print(">>");
-		int code = returnCode();
+		StudentVO svo = returnCode();
 		System.out.println("====================================조회한 학생정보==================================");
-		StudentPrint.printStudentByCode(code);
+		StudentPrint.printStudentByCode(svo);
 		System.out.println("=================================================================================");
 	}
 	// 휴지통 관리 함수
@@ -116,7 +115,7 @@ public class StudentRegistManeger {
 	// 추가기능 함수들
 
 	// db에 맞는코드를 반환할때까지 반복해서 code값을 반환해주는함수
-	public static int returnCode() throws SQLException {
+	public static StudentVO returnCode() throws SQLException {
 		int findCode = 0;
 		while (findCode == 0) {
 			try {
@@ -139,7 +138,9 @@ public class StudentRegistManeger {
 				System.out.print(">>");
 			}
 		}
-		return findCode;
+		StudentVO svo= new StudentVO();
+		svo.setCode(findCode);
+		return svo;
 	}
 
 	// studentVO를 작성해주는함수
