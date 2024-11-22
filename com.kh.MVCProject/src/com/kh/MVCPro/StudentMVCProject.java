@@ -1,4 +1,4 @@
-package com.kh.MVCProject.model;
+package com.kh.MVCPro;
 
 import java.sql.SQLException;
 import java.util.Scanner;
