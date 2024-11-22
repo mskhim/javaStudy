@@ -115,8 +115,7 @@ public class StudentDAO {
 	}
 
 	// student2 db를 svo를 받은후 해당 svo코드의 db를 update 후 결과를 boolean 반환
-	public static boolean updateStudentDB(StudentVO svo) {
-		try {
+	public static boolean updateStudentDB(StudentVO svo) throws SQLException {
 			int rs1=0;
 		Connection con = null;
 		Statement stmt = null;
@@ -126,7 +125,7 @@ public class StudentDAO {
 			pstmt = con.prepareStatement(updateSql);
 			pstmt.setString(1, svo.getName());
 			pstmt.setString(2, svo.getBirth());
-			pstmt.setInt(3, svo.getkor());
+			pstmt.setInt(3, svo.getKor());
 			pstmt.setInt(4, svo.getMath());
 			pstmt.setInt(5, svo.getEng());
 			pstmt.setInt(6, svo.getCode());
@@ -134,10 +133,6 @@ public class StudentDAO {
 			stmt.executeUpdate(callCalProc);
 			DBUtility.dbClose(con, stmt,pstmt);
 			return (rs1 != 0) ? true : false;
-		} catch (Exception e) {
-			e.toString();
-		}
-		return false;
 
 	}
 

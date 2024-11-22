@@ -32,14 +32,15 @@ public class StudentRegistManeger {
 		StudentPrint.printStudentByCode(svo);
 		System.out.println("=================================================================================");
 		StudentVO svo2 = writeStudentVO();
+		svo2.setCode(svo.getCode());
 		// 수정전의 학생정보를 코드를 받아서 출력
-		StudentPrint.printStudentByCode(svo2);
+		StudentPrint.printStudentByCode(svo);
 		System.out.println("▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲수정전▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲");
 		System.out.println("▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼수정후▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼");
 		// 수정할 학생의 점보를 svo에 담아서 업데이트
-		StudentDAO.updateStudentDB(svo);
+		StudentDAO.updateStudentDB(svo2);
 		// 바뀐 정보를 출력
-		StudentPrint.printStudentByCode(svo);
+		StudentPrint.printStudentByCode(svo2);
 	}
 	// 학생을 delete 하는 함수
 
