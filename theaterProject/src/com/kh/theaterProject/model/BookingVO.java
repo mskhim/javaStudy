@@ -11,14 +11,15 @@ public class BookingVO {
 	private int amount;// number(2) not null, --합계인원
 	private int price;// number(7), --합계가격
 	private Timestamp booking_date;// date not null --예매날짜
-	private String hName;
-	private String cName;
+	private String hallName;
+	private String cineName;
+	private String cusName;
 	private Timestamp startTime;
 	private String status;
 	
 	
 	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
-			Timestamp booking_date,  String cName, String hName,Timestamp startTime,String status) {
+			Timestamp booking_date,  String cName, String hName,Timestamp startTime,String status,String cusName) {
 		super();
 		this.no = no;
 		this.playing_no = playing_no;
@@ -27,10 +28,11 @@ public class BookingVO {
 		this.amount = amount;
 		this.price = price;
 		this.booking_date = booking_date;
-		this.hName = hName;
-		this.cName = cName;
+		this.hallName = hName;
+		this.cineName = cName;
 		this.startTime = startTime;
 		this.status = status;
+		this.cusName = cusName;
 		
 	}
 
@@ -119,14 +121,14 @@ public class BookingVO {
 	}
 
 	public static String getHeader() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s", "No", "Playing No", "Customer No","hall","Cinema Name","Start Time", "Code",
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s", "No", "Playing No", "Customer No","Customer Name","hall","Cinema Name","Start Time", "Code",
 				"Amount", "Price", "Booking Date","Status");
 	}
 
 	// 데이터 출력 부분
 	@Override
 	public String toString() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s ", no, playing_no, customer_no,hName+"관",cName,formatStartTime(), code, amount,
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s ", no, playing_no, customer_no,cusName,hallName+"관",cineName,formatStartTime(), code, amount,
 				price, booking_date,getStatusText());
 	}
 	

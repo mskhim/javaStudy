@@ -19,7 +19,7 @@ public class CustomerDAO {
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from CUSTOMER),'FM00000'), ?, ?, ?, ?,?,SYSDATE)";
 	private final String INSERT_RANDOM_SQL = "insert into CUSTOMER(no, NAME, ID, PWD, REGISTDATE) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from CUSTOMER),'FM00000'),DBMS_RANDOM.string('U',5),DBMS_RANDOM.string('U',10),DBMS_RANDOM.string('U',10),sysdate)";
-	private final String UPDATE_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ? PHONE = ? WHERE NO = TO_CHAR(?,'FM00000') ";
+	private final String UPDATE_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ?, PHONE = ? WHERE NO = ? ";
 	private final String DELETE_SQL = "DELETE FROM customer WHERE NO = TO_CHAR(?,'FM00000')";
 
 	// CustomerVO를 받아서 db에 insert 후 성공여부 true false 반환
@@ -57,19 +57,21 @@ public class CustomerDAO {
 	}
 
 	// CustomerVO를 받아서 db에 update 후 성공여부 true false 반환
-	public boolean updateDB(CustomerVO cvo) throws SQLException {
+	public boolean updateDB(CustomerVO cvo) throws SQLException  {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		con = DBUtility.dbCon();
-		pstmt = con.prepareStatement(UPDATE_SQL);
-		pstmt.setString(1, cvo.getName());
-		pstmt.setString(2, cvo.getId());
-		pstmt.setString(3, cvo.getPwd());
-		pstmt.setDate(4, cvo.getBirth());
-		pstmt.setString(5, cvo.getPhone());
-		pstmt.setString(6, cvo.getNo());
-		int result1 = pstmt.executeUpdate();
-		DBUtility.dbClose(con, pstmt);
+		int result1=0;
+			pstmt = con.prepareStatement(UPDATE_SQL);
+			pstmt.setString(1, cvo.getName());
+			pstmt.setString(2, cvo.getId());
+			pstmt.setString(3, cvo.getPwd());
+			pstmt.setDate(4, cvo.getBirth());
+			pstmt.setString(5, cvo.getPhone());
+			pstmt.setString(6, cvo.getNo());
+			 result1= pstmt.executeUpdate();
+			DBUtility.dbClose(con, pstmt);
+			
 		return (result1 != 0) ? true : false;
 	}
 
