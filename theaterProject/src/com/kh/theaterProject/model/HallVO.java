@@ -32,8 +32,19 @@ public class HallVO {
 		this.price = price;
 	}
 	@Override
-	public String toString() {
-		return "HallVO [no=" + no + "관 , seats=" + seats + ", price=" + price + "]";
-	}
-
+    public String toString() {
+        return String.format(
+            "%-10s %-10d %-10d",
+            no != null ? no : "N/A",
+            seats,
+            price
+        );
+    }
+	
+    public static String getHeader() {
+        return String.format(
+            "%-10s %-10s %-10s",
+            "Hall No", "Seats", "Price"
+        );
+    }
 }

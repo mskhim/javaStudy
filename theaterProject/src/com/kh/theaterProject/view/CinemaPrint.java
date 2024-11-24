@@ -10,6 +10,7 @@ public class CinemaPrint {
 	// 전체 고객 리스트를 출력요청
 	public static void printAll() throws SQLException {
 		CinemaDAO cineDAO = new CinemaDAO();
+		System.out.println(CinemaVO.getHeader());
 		for (CinemaVO data : cineDAO.retrunList()) {
 			System.out.println(data.toString());
 		}
@@ -18,6 +19,7 @@ public class CinemaPrint {
 	// 전체 예매순 정렬 고객 리스트를 출력요청
 	public static void printSortAll() throws SQLException {
 		CinemaDAO cineDAO = new CinemaDAO();
+		System.out.println(CinemaVO.getHeader());
 		for (CinemaVO data : cineDAO.returnSortList()) {
 			System.out.println(data.toString());
 		}
@@ -26,6 +28,7 @@ public class CinemaPrint {
 	// no가들어있는 cnvo를 받아서 그 cnvo를 출력
 	public static void printByCode(CinemaVO cnvo) throws SQLException {
 		CinemaDAO cineDAO = new CinemaDAO();
+		System.out.println(CinemaVO.getHeader());
 		System.out.println(cineDAO.returncnvo(cnvo).toString());
 		
 	}

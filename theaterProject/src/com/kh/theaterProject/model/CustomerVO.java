@@ -86,11 +86,28 @@ public class CustomerVO {
 	public void setRegistDate(Date registDate) {
 		this.registDate = registDate;
 	}
+	
+    public static String getHeader() {
+        return String.format(
+            "%-10s %-15s %-15s %-15s %-15s %-15s %-10s %-20s",
+            "No", "Name", "ID", "Password", "Birth", "Phone", "BookCount", "RegistDate"
+        );
+    }
+	
 	@Override
 	public String toString() {
-		return "CustomerVO [no=" + no + ", name=" + name + ", id=" + id + ", pwd=" + pwd + ", birth=" + birth
-				+ ", phone=" + phone + ", bookCount=" + bookCount + ", registDate=" + registDate + "]";
-	}
+        return String.format(
+            "%-10s %-15s %-15s %-15s %-15s %-15s %-10d %-20s",
+            no != null ? no : "N/A",
+            name != null ? name : "N/A",
+            id != null ? id : "N/A",
+            pwd != null ? pwd : "N/A",
+            birth != null ? birth : "N/A",
+            phone != null ? phone : "N/A",
+            bookCount,
+            registDate != null ? registDate : "N/A"
+        );
+    }
 	
 	
 

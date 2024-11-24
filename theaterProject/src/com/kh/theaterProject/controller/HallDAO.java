@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import com.kh.theaterProject.model.HallVO;
 
 public class HallDAO {
-	private final String SELECT_SQL = "SELECT * FROM Hall";
+	private final String SELECT_SQL = "SELECT * FROM Hall ORDER BY NO";
 	private final String SELECT_BY_NO_SQL = "SELECT * FROM Hall WHERE NO = TO_CHAR(?,'FM00')";
 	private final String SELECT_SORT_SQL = "SELECT * FROM Hall ORDER BY PRICE desc";
 	private final String INSERT_SQL = "INSERT INTO Hall(NO, SEATS, PRICE) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from Hall),'FM00'), ?, ?)";
-	private final String UPATE_SQL = "UPDATE Hall SET SEATS = ?, PRICE = ? WHERE NO = ? ";
+	private final String UPDATE_SQL = "UPDATE Hall SET SEATS = ?, PRICE = ? WHERE NO = TO_CHAR(?,'FM00') ";
 	private final String DELETE_SQL = "DELETE FROM Hall WHERE NO = TO_CHAR(?,'FM00')";
 
 	// HallVO를 받아서 db에 insert 후 성공여부 true false 반환
@@ -40,7 +40,7 @@ public class HallDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		con = DBUtility.dbCon();
-		pstmt = con.prepareStatement(UPATE_SQL);
+		pstmt = con.prepareStatement(UPDATE_SQL);
 		pstmt.setInt(1, hvo.getSeats());
 		pstmt.setInt(2, hvo.getPrice());
 		pstmt.setString(3, hvo.getNo());

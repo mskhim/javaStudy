@@ -17,13 +17,24 @@ public class MenuViewer {
 	    public static void manageMenuView() {
 	        System.out.println("\n관리자 모드입니다.");
 	        System.out.println("---------------------------------------------");
-	        System.out.println("| 1. 고객정보 관리  | 2. 상영관 관리  | 3. 영화 목록 관리   |");
-	        System.out.println("| 4. 상영정보 관리  | 5. 뒤로가기    |                 |");
+	        System.out.println("| 1. 고객정보 관리  | 2. 상영관 관리  | 3. 영화 목록 관리  |");
+	        System.out.println("| 4. 상영정보 관리  | 5. 예매현황 관리 | 6. 뒤로가기    	| ");
 	        System.out.println("---------------------------------------------");
 	        System.out.println("메뉴를 선택해주세요");
 	        System.out.print(">> ");
 	    }
 
+	    // 관리자모드의 고객 데이터 확인 메뉴
+	    public static void manageBookingMenuView() {
+	    	System.out.println("\n예매 데이터 관리화면입니다.");
+	    	System.out.println("---------------------------------------------");
+	    	System.out.println("| 1. 예매 데이터 출력 | 2. 예매 데이터 생성 | 3. 데이터 수정 |");
+	    	System.out.println("| 4. 데이터 삭제     | 5. 데이터 찾기   | 6. 뒤로가기 |");
+	    	System.out.println("---------------------------------------------");
+	    	System.out.println("메뉴를 선택해주세요");
+	    	System.out.print(">> ");
+	    }
+	    
 	    // 관리자모드의 고객 데이터 확인 메뉴
 	    public static void manageCustomerMenuView() {
 	        System.out.println("\n고객 데이터 관리화면입니다.");

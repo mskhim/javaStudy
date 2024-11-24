@@ -38,12 +38,7 @@ public class CustomerRegisterManager {
 		if (name.equals("x")) {
 			name = cvo.getName();
 		}
-		System.out.println("ID를 입력해주세요.");
-		System.out.print(">>");
-		String id = sc.nextLine();
-		if (id.equals("x")) {
-			id = cvo.getId();
-		}
+		
 		System.out.println("비밀번호를 입력해주세요.");
 		System.out.print(">>");
 		String pwd = sc.nextLine();
@@ -58,6 +53,7 @@ public class CustomerRegisterManager {
 			String sBirth = sc.nextLine();
 			if (sBirth.equals("x")) {
 				birth = cvo.getBirth();
+				exitFlag = true;
 			} else {
 				try {
 					birth = Date.valueOf(sBirth);
@@ -74,7 +70,7 @@ public class CustomerRegisterManager {
 		if (phone.equals("x")) {
 			phone = cvo.getPhone();
 		}
-		cvo = new CustomerVO(cvo.getNo(), name, id, pwd, birth, phone, birth);
+		cvo = new CustomerVO(cvo.getNo(), name, cvo.getId(), pwd, birth, phone, birth);
 		Boolean Flag = cusDAO.updateDB(cvo);
 		System.out.println((Flag) ? "수정성공" : "수정실패");
 	}
@@ -248,5 +244,25 @@ public class CustomerRegisterManager {
 		}
 		return cvo;
 	}
-
+	
+	//로그인 기능
+	public static CustomerVO returnLogin(CustomerVO cvo) throws SQLException {
+		boolean exitFlag = false;
+		CustomerDAO cusDAO = new CustomerDAO();
+		CustomerVO cvo2 = cusDAO.returncvoById(cvo);
+		if(cvo2.getName()==null) {
+			System.out.println("올바른 아이디가 아닙니다.");
+			return cvo;
+		}else {
+			if(cvo2.getPwd().equals(cvo.getPwd())) {
+				System.out.println("환영합니다!");
+				return cvo2;
+			}
+			else {
+				System.out.println("비밀번호가 바르지 않습니다.");
+				return cvo;
+			}
+		}
+	}
+	
 }

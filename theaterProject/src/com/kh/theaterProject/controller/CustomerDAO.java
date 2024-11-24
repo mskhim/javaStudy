@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import com.kh.theaterProject.model.CustomerVO;
 
 public class CustomerDAO {
-	private final String SELECT_SQL = "SELECT * FROM CUSTOMER";
+	private final String SELECT_SQL = "SELECT * FROM CUSTOMER ORDER BY NO";
 	private final String SELECT_BY_NO_SQL = "SELECT * FROM CUSTOMER WHERE NO = TO_CHAR(?,'FM00000')";
 	private final String SELECT_COUNT_BY_ID_SQL = "SELECT * FROM CUSTOMER WHERE ID = ?";
 	private final String SELECT_SORT_SQL = "SELECT * FROM CUSTOMER ORDER BY BOOKCOUNT desc";
@@ -19,7 +19,7 @@ public class CustomerDAO {
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from CUSTOMER),'FM00000'), ?, ?, ?, ?,?,SYSDATE)";
 	private final String INSERT_RANDOM_SQL = "insert into CUSTOMER(no, NAME, ID, PWD, REGISTDATE) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from CUSTOMER),'FM00000'),DBMS_RANDOM.string('U',5),DBMS_RANDOM.string('U',10),DBMS_RANDOM.string('U',10),sysdate)";
-	private final String UPATE_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ? PHONE = ? WHERE NO = ? ";
+	private final String UPDATE_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ? PHONE = ? WHERE NO = TO_CHAR(?,'FM00000') ";
 	private final String DELETE_SQL = "DELETE FROM customer WHERE NO = TO_CHAR(?,'FM00000')";
 
 	// CustomerVO를 받아서 db에 insert 후 성공여부 true false 반환
@@ -61,7 +61,7 @@ public class CustomerDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		con = DBUtility.dbCon();
-		pstmt = con.prepareStatement(UPATE_SQL);
+		pstmt = con.prepareStatement(UPDATE_SQL);
 		pstmt.setString(1, cvo.getName());
 		pstmt.setString(2, cvo.getId());
 		pstmt.setString(3, cvo.getPwd());

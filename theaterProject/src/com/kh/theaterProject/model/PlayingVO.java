@@ -1,6 +1,7 @@
 package com.kh.theaterProject.model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class PlayingVO {
 	private String no;// char(3),                     --PK상영작NO
@@ -84,10 +85,43 @@ public class PlayingVO {
 		this.status = status;
 	}
 
+	 public static String getHeader() {
+	        return String.format(
+	            "%-10s %-10s %-10s %-20s %-10s %-10s",
+	            "No", "Hall No", "Cinema No", "Start Time", "Remain", "Status"
+	        );
+	    }
+	
 	@Override
-	public String toString() {
-		return "PlayingVO [no=" + no + ", hall_no=" + hall_no + ", cinema_no=" + cinema_no + ", starttime=" + starttime
-				+ ", remain=" + remain + ", status=" + status + "]";
-	}
+    public String toString() {
+        return String.format(
+            "%-10s %-10s %-10s %-20s %-10d %-10s",
+            no != null ? no : "N/A",
+            hall_no != null ? hall_no : "N/A",
+            cinema_no != null ? cinema_no : "N/A",
+            formatStartTime(),
+            remain,
+            getStatusText()
+        );
+    }
+	
+    private String getStatusText() {
+        if (status == null) {
+            return "상영종료";
+        } else {
+        if(status.equals("0"))
+        	return "상영예정";
+        else {
+        	return "상영중";
+        }
+        }
+    }
+    private String formatStartTime() {
+        if (starttime == null) {
+            return "N/A";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+        return sdf.format(starttime);
+    }
 
 }

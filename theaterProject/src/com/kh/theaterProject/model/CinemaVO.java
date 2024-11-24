@@ -57,10 +57,31 @@ public class CinemaVO {
 		this.status = status;
 	}
 
-	@Override
-	public String toString() {
-		return "CinemaVO [no=" + no + ", name=" + name + ", runningtime=" + runningtime + ", status=" + status + "]";
-	}
+    public static String getHeader() {
+        return String.format(
+            "%-10s %-20s %-15s %-10s",
+            "No", "Name", "Running Time", "Status"
+        );
+    }
 	
+	@Override
+	   public String toString() {
+        return String.format(
+            "%-10s %-20s %-15d %-10s",
+            no != null ? no : "N/A",
+            name != null ? name : "N/A",
+            runningtime,
+            getStatusText()
+        );
+    }
+
+    // status 값을 텍스트로 변환
+    private String getStatusText() {
+        if (status == null) {
+            return "-";
+        } else {
+        	return "상영중";
+        }
+    }
 
 }
