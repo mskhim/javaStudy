@@ -83,9 +83,10 @@ public class BookingDAO {
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
 			String cName = rs.getString("NAME");
-			String hName = rs.getString("PNO");
+			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			String status = rs.getString("STATUS");
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
@@ -111,9 +112,10 @@ public class BookingDAO {
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
 			String cName = rs.getString("NAME");
-			String hName = rs.getString("PNO");
+			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			String status = rs.getString("STATUS");
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
@@ -139,9 +141,10 @@ public class BookingDAO {
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
 			String cName = rs.getString("NAME");
-			String hName = rs.getString("PNO");
+			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			String status = rs.getString("STATUS");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);
@@ -167,9 +170,10 @@ public class BookingDAO {
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
 			String cName = rs.getString("NAME");
-			String hName = rs.getString("PNO");
+			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			String status = rs.getString("STATUS");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status);
 			BookingList.add(bvo);
 		}
 //				stuListPrint(stuList);
@@ -194,9 +198,10 @@ public class BookingDAO {
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
 			String cName = rs.getString("NAME");
-			String hName = rs.getString("PNO");
+			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			String status = rs.getString("STATUS");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);

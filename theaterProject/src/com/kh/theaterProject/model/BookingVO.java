@@ -14,10 +14,11 @@ public class BookingVO {
 	private String hName;
 	private String cName;
 	private Timestamp startTime;
+	private String status;
 	
 	
 	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
-			Timestamp booking_date,  String cName, String hName,Timestamp startTime) {
+			Timestamp booking_date,  String cName, String hName,Timestamp startTime,String status) {
 		super();
 		this.no = no;
 		this.playing_no = playing_no;
@@ -29,6 +30,8 @@ public class BookingVO {
 		this.hName = hName;
 		this.cName = cName;
 		this.startTime = startTime;
+		this.status = status;
+		
 	}
 
 	public BookingVO() {
@@ -116,15 +119,15 @@ public class BookingVO {
 	}
 
 	public static String getHeader() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s", "No", "Playing No", "Customer No","hall","Cinema Name","Start Time", "Code",
-				"Amount", "Price", "Booking Date");
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s", "No", "Playing No", "Customer No","hall","Cinema Name","Start Time", "Code",
+				"Amount", "Price", "Booking Date","Status");
 	}
 
 	// 데이터 출력 부분
 	@Override
 	public String toString() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s", no, playing_no, customer_no,hName,cName,formatStartTime(), code, amount,
-				price, booking_date);
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s ", no, playing_no, customer_no,hName+"관",cName,formatStartTime(), code, amount,
+				price, booking_date,getStatusText());
 	}
 	
     private String formatStartTime() {
@@ -134,5 +137,15 @@ public class BookingVO {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
         return sdf.format(startTime);
     }
-	
+    private String getStatusText() {
+        if (status == null) {
+            return "만료";
+        } else {
+        if(status.equals("0"))
+        	return "사용예정";
+        else {
+        	return "상영중";
+        }
+        }
+    }
 }

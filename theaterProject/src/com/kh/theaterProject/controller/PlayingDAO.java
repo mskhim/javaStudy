@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import com.kh.theaterProject.model.PlayingVO;
 
 public class PlayingDAO {
-	private final String SELECT_SQL = "SELECT P.NO AS NO ,HALL_NO, CINEMA_NO,STARTTIME,REMAIN,P.STATUS,C.NAME  FROM PLAYING P join cinema C On C.NO=P.CINEMA_NO  ORDER BY NO";
-	private final String SELECT_BY_NO_SQL = "SELECT * FROM Playing WHERE NO = TO_CHAR(?,'FM000')";
-	private final String SELECT_SORT_SQL = "SELECT P.NO AS NO ,HALL_NO, CINEMA_NO,STARTTIME,REMAIN,P.STATUS,C.NAME  FROM PLAYING P join cinema C On C.NO=P.CINEMA_NO ORDER BY date";
+	private final String SELECT_SQL = "select * from PLAING_CINEMA_JOIN  ORDER BY STARTTIME";
+	private final String SELECT_BY_NO_SQL = "select * from PLAING_CINEMA_JOIN WHERE NO = TO_CHAR(?,'FM000')";
+	private final String SELECT_SORT_SQL = "select * from PLAING_CINEMA_JOIN ORDER BY date";
 	private final String INSERT_SQL = "INSERT INTO Playing(NO,HALL_NO, CINEMA_NO, STARTTIME, REMAIN) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from Playing),'FM000'), TO_CHAR(?,'FM00'), TO_CHAR(?,'FM00'), ?,(select seats from hall where no=TO_CHAR(?,'FM00')))";
 	private final String UPDATE_SQL = "UPDATE Playing SET HALL_NO = TO_CHAR(?,'FM00'), CINEMA_NO = TO_CHAR(?,'FM00'), STARTTIME = ? WHERE NO = TO_CHAR(?,'FM000') ";
