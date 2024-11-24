@@ -17,6 +17,14 @@ public class CinemaVO {
 		this.runningtime = runningtime;
 	}
 
+	public CinemaVO(String no, String name, int runningtime, String status) {
+		super();
+		this.no = no;
+		this.name = name;
+		this.runningtime = runningtime;
+		this.status = status;
+	}
+
 	public String getNo() {
 		return no;
 	}

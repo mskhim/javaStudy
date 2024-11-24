@@ -1,12 +1,12 @@
 package com.kh.theaterProject.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class PlayingVO {
 	private String no;// char(3),                     --PK상영작NO
 	private String  hall_no;// char(2),                --FK상영관NO
 	private String cinema_no;// char(3),              --FK영화NO    
-	private Date starttime;// date not null,        --시작시간
+	private Timestamp starttime;// date not null,        --시작시간
 	private int remain;// number(3) not null,      --잔여좌석
 	private String status;// char(1) default 0        --상영상태
 	
@@ -14,15 +14,28 @@ public class PlayingVO {
 		super();
 	}
 
-	public PlayingVO(String no, String hall_no, String cinema_no, Date starttime, int remain) {
+
+
+	public PlayingVO(String no, String hall_no, String cinema_no, Timestamp starttime, int remain, String status) {
 		super();
 		this.no = no;
 		this.hall_no = hall_no;
 		this.cinema_no = cinema_no;
 		this.starttime = starttime;
 		this.remain = remain;
+		this.status = status;
 	}
 
+
+
+	public PlayingVO(String no, String hall_no, String cinema_no, Timestamp starttime) {
+		super();
+		this.no = no;
+		this.hall_no = hall_no;
+		this.cinema_no = cinema_no;
+		this.starttime = starttime;
+	}
+	
 	public String getNo() {
 		return no;
 	}
@@ -47,11 +60,11 @@ public class PlayingVO {
 		this.cinema_no = cinema_no;
 	}
 
-	public Date getStarttime() {
+	public Timestamp getStarttime() {
 		return starttime;
 	}
 
-	public void setStarttime(Date starttime) {
+	public void setStarttime(Timestamp starttime) {
 		this.starttime = starttime;
 	}
 

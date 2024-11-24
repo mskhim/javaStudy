@@ -14,6 +14,20 @@ public class CustomerVO {
 	public CustomerVO() {
 		super();
 	}
+	
+	public CustomerVO(String no, String name, String id, String pwd, Date birth, String phone, int bookCount,
+			Date registDate) {
+		super();
+		this.no = no;
+		this.name = name;
+		this.id = id;
+		this.pwd = pwd;
+		this.birth = birth;
+		this.phone = phone;
+		this.bookCount = bookCount;
+		this.registDate = registDate;
+	}
+
 	public CustomerVO(String no, String name, String id, String pwd, Date birth, String phone, Date registDate) {
 		super();
 		this.no = no;

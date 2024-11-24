@@ -1,7 +1,11 @@
 package com.kh.theaterProject;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.kh.theaterProject.controller.CinemaRegisterManager;
+import com.kh.theaterProject.controller.CustomerRegisterManager;
+import com.kh.theaterProject.controller.HallRegisterManager;
 import com.kh.theaterProject.view.MANAGE_MENU_CHOICE;
 import com.kh.theaterProject.view.MANAGE_SUB_MENU_CHOICE;
 import com.kh.theaterProject.view.MENU_CHOICE;
@@ -11,8 +15,9 @@ public class TheaterMain {
 
 	public static Scanner sc = new Scanner(System.in);
 	//메인
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		int no = 0;
+		CustomerRegisterManager crm = new CustomerRegisterManager();
 		boolean exitFlag = false;
 		while (!exitFlag) {
 			MenuViewer.mainMenuView();
@@ -33,7 +38,7 @@ public class TheaterMain {
 				printPlayingMenu();
 				break;
 			case MENU_CHOICE.REGISTER:
-				registerMenu();
+				crm.insertRegistManager();
 				break;
 			case MENU_CHOICE.MANAGERMODE:
 				managerModeMenu();
@@ -48,6 +53,7 @@ public class TheaterMain {
 		}
 
 	}
+	
 	//관리자 모드 메뉴
 	private static void managerModeMenu() {
 		int no = 0;
@@ -81,6 +87,7 @@ public class TheaterMain {
 			}
 		}
 	}
+	
 	//관리자 모드의 상영작 메뉴
 	private static void managePlayingMenu() {
 		int no = 0;
@@ -115,10 +122,13 @@ public class TheaterMain {
 		}
 		
 	}
+	
 	//관리자 모드의 영화 메뉴
 	private static void manageCinemaMenu() {
 		int no = 0;
+		CinemaRegisterManager cnrm = new CinemaRegisterManager();
 		boolean exitFlag = false;
+		try {
 		while (!exitFlag) {
 			MenuViewer.manageCinemaMenuView();
 			try {
@@ -128,30 +138,38 @@ public class TheaterMain {
 			}
 			switch (no) {
 			case MANAGE_SUB_MENU_CHOICE.SELECT:
-				manageCustomerMenu();
+					cnrm.selectManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.INSERT:
-				manageHallMenu();
+				cnrm.insertManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.UPDATE:
-				manageCinemaMenu();
+				cnrm.updateManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.DELETE:
-				managePlayingMenu();
+				cnrm.deleteManager();
+				break;
+			case MANAGE_SUB_MENU_CHOICE.FIND:
+				cnrm.findManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.END:
 				System.out.println("이전메뉴로 돌아갑니다.");
 				exitFlag = true;
 			default:
 				System.out.println("해당 메뉴 번호만 입력하세요.");
-
 			}
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
+	
 	//관리자 모드의 상영관 메뉴
 	private static void manageHallMenu() {
 		int no = 0;
+		HallRegisterManager hrm= new HallRegisterManager();
 		boolean exitFlag = false;
 		while (!exitFlag) {
 			MenuViewer.manageHallMenuView();
@@ -160,18 +178,22 @@ public class TheaterMain {
 			} catch (Exception e) {
 				System.out.println("숫자를 입력해주세요.");
 			}
+			try {
 			switch (no) {
 			case MANAGE_SUB_MENU_CHOICE.SELECT:
-				manageCustomerMenu();
+					hrm.selectManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.INSERT:
-				manageHallMenu();
+				hrm.insertManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.UPDATE:
-				manageCinemaMenu();
+				hrm.updateManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.DELETE:
-				managePlayingMenu();
+				hrm.deleteManager();
+				break;
+			case MANAGE_SUB_MENU_CHOICE.FIND:
+				hrm.findManager();
 				break;
 			case MANAGE_SUB_MENU_CHOICE.END:
 				System.out.println("이전메뉴로 돌아갑니다.");
@@ -180,13 +202,19 @@ public class TheaterMain {
 				System.out.println("해당 메뉴 번호만 입력하세요.");
 
 			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
+	
 	//관리자 모드의 고객 메뉴
 	private static void manageCustomerMenu() {
 		int no = 0;
 		boolean exitFlag = false;
+		CustomerRegisterManager crm = new CustomerRegisterManager();
 		while (!exitFlag) {
 			MenuViewer.manageCustomerMenuView();
 			try {
@@ -194,43 +222,49 @@ public class TheaterMain {
 			} catch (Exception e) {
 				System.out.println("숫자를 입력해주세요.");
 			}
-			switch (no) {
-			case MANAGE_SUB_MENU_CHOICE.SELECT:
-				manageCustomerMenu();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.INSERT:
-				manageHallMenu();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.UPDATE:
-				manageCinemaMenu();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.DELETE:
-				managePlayingMenu();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.END:
-				System.out.println("이전메뉴로 돌아갑니다.");
-				exitFlag = true;
-			default:
-				System.out.println("해당 메뉴 번호만 입력하세요.");
-
+			try {
+				switch (no) {
+				case MANAGE_SUB_MENU_CHOICE.SELECT:
+					crm.selectManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.INSERT:
+					crm.insertRandomManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.UPDATE:
+					crm.updateManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.DELETE:
+					crm.deleteManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.FIND:
+					crm.findManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.END:
+					System.out.println("이전메뉴로 돌아갑니다.");
+					exitFlag = true;
+				default:
+					System.out.println("해당 메뉴 번호만 입력하세요.");
+					
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
 	}
-	//회원가입 메뉴
-	private static void registerMenu() {
-		// TODO Auto-generated method stub
 
-	}
 	//현재상영작 출력 매뉴
 	private static void printPlayingMenu() {
 		// TODO Auto-generated method stub
 
 	}
+	
 	//예약확인 메뉴
 	private static void checkBookingMenu() {
 		// TODO Auto-generated method stub
 
 	}
+	
 	//예약 메뉴
 	private static void bookingMenu() {
 
