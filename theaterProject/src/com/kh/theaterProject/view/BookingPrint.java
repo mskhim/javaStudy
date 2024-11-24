@@ -33,4 +33,14 @@ public class BookingPrint {
 
 	}
 
+	// customerNO가들어있는 bvo를 받아서 그 bvo를 출력
+	public static void printByCustomer(BookingVO bvo) throws SQLException {
+		BookingDAO cineDAO = new BookingDAO();
+		System.out.println(BookingVO.getHeader());
+		for (BookingVO data : cineDAO.returnCustomerList(bvo)) {
+			System.out.println(data.toString());
+		}
+
+	}
+
 }

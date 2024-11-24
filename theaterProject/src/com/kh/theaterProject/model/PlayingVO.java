@@ -10,9 +10,25 @@ public class PlayingVO {
 	private Timestamp starttime;// date not null,        --시작시간
 	private int remain;// number(3) not null,      --잔여좌석
 	private String status;// char(1) default 0        --상영상태
+	private String cName; //영화이름
+	
 	
 	public PlayingVO() {
 		super();
+	}
+
+
+
+	public PlayingVO(String no, String hall_no, String cinema_no, Timestamp starttime, int remain, String status,
+			String cName) {
+		super();
+		this.no = no;
+		this.hall_no = hall_no;
+		this.cinema_no = cinema_no;
+		this.starttime = starttime;
+		this.remain = remain;
+		this.status = status;
+		this.cName = cName;
 	}
 
 
@@ -88,7 +104,7 @@ public class PlayingVO {
 	 public static String getHeader() {
 	        return String.format(
 	            "%-10s %-10s %-10s %-20s %-10s %-10s",
-	            "No", "Hall No", "Cinema No", "Start Time", "Remain", "Status"
+	            "No", "Hall No", "Cinema Name", "Start Time", "Remain", "Status"
 	        );
 	    }
 	
@@ -97,8 +113,8 @@ public class PlayingVO {
         return String.format(
             "%-10s %-10s %-10s %-20s %-10d %-10s",
             no != null ? no : "N/A",
-            hall_no != null ? hall_no : "N/A",
-            cinema_no != null ? cinema_no : "N/A",
+            hall_no+"관",
+            cName,
             formatStartTime(),
             remain,
             getStatusText()

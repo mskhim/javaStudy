@@ -21,12 +21,12 @@ public class PlayingRegisterManager {
 	// 삭제
 	public void deleteManager() throws SQLException {
 		System.out.println("삭제할 상영정보 번호를 입력해주세요.");
-		PlayingDAO cineDAO = new PlayingDAO();
+		PlayingDAO palyDAO = new PlayingDAO();
 		PlayingVO pvo = returnRightNo();
 		System.out.println("============================삭제대상 상영정보============================");
 		PlayingPrint.printByCode(pvo);
 		System.out.println("=================================================================");
-		boolean flag = cineDAO.deleteDB(pvo);
+		boolean flag = palyDAO.deleteDB(pvo);
 		System.out.println((flag) ? "삭제성공" : "삭제실패");
 
 	}
@@ -35,7 +35,7 @@ public class PlayingRegisterManager {
 
 	// 업데이트
 	public void updateManager() throws SQLException {
-		PlayingDAO cineDAO = new PlayingDAO();
+		PlayingDAO palyDAO = new PlayingDAO();
 		System.out.print("수정할 상영정보의 번호를 입력하세요 : ");
 		PlayingVO pvo = returnRightNo();
 		System.out.println("============================수정대상 상영정보===============================");
@@ -48,7 +48,7 @@ public class PlayingRegisterManager {
 		System.out.println("새로운 영화 번호를 입력해주세요.");
 		System.out.print(">>");
 		CinemaPrint.printAll();
-		String cinemaNo = CinemaRegisterManager.returnRightNo().getNo();
+		String palymaNo = CinemaRegisterManager.returnRightNo().getNo();
 		System.out.println("새로운 상영 시작시간을 입력해주세요.(yyyy/MM/dd HH:mi 형식으로 작성,x 입력시 기존값 사용)");
 		System.out.print(">>");
 		Timestamp tsp = null;
@@ -65,15 +65,15 @@ public class PlayingRegisterManager {
 				timeFlag = true;
 			}
 		}
-		pvo = new PlayingVO(pvo.getNo(), hallNo, cinemaNo, tsp);
-		Boolean Flag = cineDAO.updateDB(pvo);
+		pvo = new PlayingVO(pvo.getNo(), hallNo, palymaNo, tsp);
+		Boolean Flag = palyDAO.updateDB(pvo);
 		System.out.println((Flag) ? "수정성공" : "수정실패");
 	}
 
 	// 입력
 	public void insertManager() throws SQLException {
 
-		PlayingDAO cineDAO = new PlayingDAO();
+		PlayingDAO palyDAO = new PlayingDAO();
 		System.out.println("새로운 상영관 번호를 입력해주세요.");
 		System.out.print(">>");
 		HallPrint.printAll();
@@ -81,7 +81,7 @@ public class PlayingRegisterManager {
 		System.out.println("새로운 영화 번호를 입력해주세요.");
 		System.out.print(">>");
 		CinemaPrint.printAll();
-		String cinemaNo = CinemaRegisterManager.returnRightNo().getNo();
+		String palymaNo = CinemaRegisterManager.returnRightNo().getNo();
 		System.out.println("새로운 상영 시작시간을 입력해주세요.(yyyy/MM/dd HH:mi 형식으로 작성)");
 		System.out.print(">>");
 		boolean timeFlag = false;
@@ -98,8 +98,8 @@ public class PlayingRegisterManager {
 				System.out.print(">>");
 			}
 		}
-		PlayingVO pvo = new PlayingVO(null, hallNo, cinemaNo, tsp);
-		boolean flag = cineDAO.insertDB(pvo);
+		PlayingVO pvo = new PlayingVO(null, hallNo, palymaNo, tsp);
+		boolean flag = palyDAO.insertDB(pvo);
 		System.out.println((flag) ? "입력성공" : "입력실패");
 	}
 
@@ -127,14 +127,14 @@ public class PlayingRegisterManager {
 	public static PlayingVO returnRightNo() throws SQLException {
 		boolean exitFlag = false;
 		PlayingVO pvo = new PlayingVO();
-		PlayingDAO cineDAO = new PlayingDAO();
+		PlayingDAO palyDAO = new PlayingDAO();
 		while (!exitFlag) {
 			System.out.print(">>");
 			try {
 				int no = Integer.parseInt(sc.nextLine());
 				String sNo = String.valueOf(no);
 				pvo.setNo(sNo);
-				pvo = cineDAO.returnpvo(pvo);
+				pvo = palyDAO.returnpvo(pvo);
 				if (pvo.getHall_no() != null) {
 					exitFlag = true;
 

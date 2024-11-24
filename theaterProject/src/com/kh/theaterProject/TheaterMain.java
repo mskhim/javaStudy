@@ -8,8 +8,10 @@ import com.kh.theaterProject.controller.CinemaRegisterManager;
 import com.kh.theaterProject.controller.CustomerRegisterManager;
 import com.kh.theaterProject.controller.HallRegisterManager;
 import com.kh.theaterProject.controller.PlayingRegisterManager;
+import com.kh.theaterProject.model.CustomerVO;
 import com.kh.theaterProject.view.MANAGE_MENU_CHOICE;
 import com.kh.theaterProject.view.MANAGE_SUB_MENU_CHOICE;
+import com.kh.theaterProject.view.MENU_BOOKING_INQUERY;
 import com.kh.theaterProject.view.MENU_CHOICE;
 import com.kh.theaterProject.view.MenuViewer;
 import com.kh.theaterProject.view.PlayingPrint;
@@ -20,7 +22,6 @@ public class TheaterMain {
 	// 메인
 	public static void main(String[] args) throws SQLException {
 		int no = 0;
-		BookingRegisterManager brm = new BookingRegisterManager();
 		CustomerRegisterManager crm = new CustomerRegisterManager();
 		boolean exitFlag = false;
 		while (!exitFlag) {
@@ -32,11 +33,8 @@ public class TheaterMain {
 			}
 
 			switch (no) {
-			case MENU_CHOICE.BOOKING:
-				bookingMenu();
-				break;
-			case MENU_CHOICE.CHECKBOOKING:
-				brm.findManager();
+			case MENU_CHOICE.LOGIN:
+				loginMenu(); 
 				break;
 			case MENU_CHOICE.PRINTPLAYING:
 				PlayingPrint.printAll();
@@ -314,25 +312,80 @@ public class TheaterMain {
 		}
 	}
 
-	// 현재상영작 출력 매뉴
-	private static void printPlayingMenu() {
-		PlayingRegisterManager prm = new PlayingRegisterManager();
-		try {
-			prm.selectManager();
-		} catch (SQLException e) {
-
-			e.printStackTrace();
+	// 예매확인 메뉴
+	private static void bookingInqueryMenu() {
+		BookingRegisterManager brm = new BookingRegisterManager();
+		int no = 0;
+		boolean exitFlag = false;
+		
+		while (!exitFlag) {
+			try {
+				System.out.println("1. 예매 취소하기 2. 예매 변경하기 3. 나가기");
+				no = Integer.parseInt(sc.nextLine());
+			} catch (Exception e) {
+				System.out.println("숫자를 입력해주세요.");
+			}
+			try {
+				switch (no) {
+				case MENU_BOOKING_INQUERY.CANCLE:
+					brm.deleteCancleManager();
+					break;
+				case MENU_BOOKING_INQUERY.UPDATE:
+					brm.updateManager();
+					break;
+				case MENU_BOOKING_INQUERY.END:
+					System.out.println("이전메뉴로 돌아갑니다.");
+					exitFlag = true;
+					break;
+				default:
+					System.out.println("해당 메뉴 번호만 입력하세요.");
+					break;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	// 예약확인 메뉴
-	private static void checkBookingMenu() {
-
+	// 로그인 메뉴
+	private static void loginMenu() throws SQLException {
+		BookingRegisterManager brm = new BookingRegisterManager();
+		CustomerVO cvo = brm.loginManager();
+		if(cvo.getName()==null) {
+			return;
+		}else {
+			boolean exitFlag = false;
+			int num =0 ;
+			while(!exitFlag) {
+			System.out.println("1. 예매하기 2. 예매 조회,변경  3. 나가기");
+			try {
+				num = Integer.parseInt(sc.nextLine());
+			} catch (Exception e) {
+				System.out.println("숫자를 입력해주세요");
+				System.out.print(">>");
+			}
+			switch (num) {
+			case 1: {
+			brm.bookingManager(cvo);	
+			break;
+			}
+			case 2: {
+			brm.bookingInquiryManager(cvo);
+				bookingInqueryMenu();
+				break;
+			}
+			case 3: {
+				exitFlag = true;
+				break;
+			}
+			default:
+				System.out.println("입력한 메뉴 번호를 확인해주세요");
+				System.out.print(">>");
+			}
+			}
+			
+		}
 	}
-
-	// 예약 메뉴
-	private static void bookingMenu() {
-
-	}
-
 }
+
+

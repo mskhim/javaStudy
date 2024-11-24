@@ -1,6 +1,7 @@
 package com.kh.theaterProject.model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class BookingVO {
 	private String no;// char(5), --PK
@@ -10,6 +11,25 @@ public class BookingVO {
 	private int amount;// number(2) not null, --합계인원
 	private int price;// number(7), --합계가격
 	private Timestamp booking_date;// date not null --예매날짜
+	private String hName;
+	private String cName;
+	private Timestamp startTime;
+	
+	
+	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
+			Timestamp booking_date,  String cName, String hName,Timestamp startTime) {
+		super();
+		this.no = no;
+		this.playing_no = playing_no;
+		this.customer_no = customer_no;
+		this.code = code;
+		this.amount = amount;
+		this.price = price;
+		this.booking_date = booking_date;
+		this.hName = hName;
+		this.cName = cName;
+		this.startTime = startTime;
+	}
 
 	public BookingVO() {
 		super();
@@ -96,15 +116,23 @@ public class BookingVO {
 	}
 
 	public static String getHeader() {
-		return String.format("%-10s %-15s %-15s %-10s %-10s %-10s %-20s", "No", "Playing No", "Customer No", "Code",
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s", "No", "Playing No", "Customer No","hall","Cinema Name","Start Time", "Code",
 				"Amount", "Price", "Booking Date");
 	}
 
 	// 데이터 출력 부분
 	@Override
 	public String toString() {
-		return String.format("%-10s %-15s %-15s %-10s %-10s %-10s %-20s", no, playing_no, customer_no, code, amount,
+		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s", no, playing_no, customer_no,hName,cName,formatStartTime(), code, amount,
 				price, booking_date);
 	}
-
+	
+    private String formatStartTime() {
+        if (startTime == null) {
+            return "N/A";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+        return sdf.format(startTime);
+    }
+	
 }

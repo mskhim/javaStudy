@@ -45,7 +45,7 @@ public class CustomerRegisterManager {
 		if (pwd.equals("x")) {
 			pwd = cvo.getPwd();
 		}
-		System.out.println("생년월일을 입력해주세요. (yyyy-mm-dd생략하려면 x 입력)");
+		System.out.println("생년월일을 입력해주세요. (yyyy-mm-dd생략하려면 x 입력 기존에 날짜가 없을경우 입력해야 수정가능)");
 		System.out.print(">>");
 		boolean exitFlag = false;
 		Date birth = null;
@@ -215,6 +215,23 @@ public class CustomerRegisterManager {
 		System.out.println((flag) ? "입력성공" : "입력실패");
 	}
 
+	//로그인 기능 
+	public CustomerVO returnLogin(CustomerVO cvo) throws SQLException {
+		CustomerDAO cusDAO = new CustomerDAO();
+		CustomerVO cvo2 = cusDAO.returncvoById(cvo);
+		if(cvo2.getName()==null) {
+			return cvo;
+		}else {
+			if(cvo2.getPwd().equals(cvo.getPwd())) {
+				return cvo2;
+			}
+			else {
+				return cvo;
+			}
+		}
+	}
+	
+	
 	// 해당 클래스 내부에서만 사용할 함수들
 
 	// 실행하면 존재하는 customer no가 나올떄까지 반복해서 올바른 CustomerVO를 반환해주는 함수
@@ -245,24 +262,5 @@ public class CustomerRegisterManager {
 		return cvo;
 	}
 	
-	//로그인 기능
-	public static CustomerVO returnLogin(CustomerVO cvo) throws SQLException {
-		boolean exitFlag = false;
-		CustomerDAO cusDAO = new CustomerDAO();
-		CustomerVO cvo2 = cusDAO.returncvoById(cvo);
-		if(cvo2.getName()==null) {
-			System.out.println("올바른 아이디가 아닙니다.");
-			return cvo;
-		}else {
-			if(cvo2.getPwd().equals(cvo.getPwd())) {
-				System.out.println("환영합니다!");
-				return cvo2;
-			}
-			else {
-				System.out.println("비밀번호가 바르지 않습니다.");
-				return cvo;
-			}
-		}
-	}
-	
+
 }

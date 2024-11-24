@@ -6,8 +6,8 @@ public class MenuViewer {
 	    public static void mainMenuView() {
 	        System.out.println("\n환영합니다.");
 	        System.out.println("---------------------------------------------");
-	        System.out.println("| 1. 예매 하기 | 2. 예매 확인하기 | 3. 현재 상영작 확인하기 |");
-	        System.out.println("| 4. 회원가입  | 5. 관리자모드   | 6. 프로그램 종료       |");
+	        System.out.println("| 1. 로그인   |  2. 현재 상영작 확인하기         |");
+	        System.out.println("| 3. 회원가입  | 4. 관리자모드   | 5. 프로그램 종료|");
 	        System.out.println("---------------------------------------------");
 	        System.out.println("메뉴를 선택해주세요");
 	        System.out.print(">> ");

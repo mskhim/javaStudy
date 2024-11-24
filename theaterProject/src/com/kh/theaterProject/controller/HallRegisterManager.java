@@ -16,19 +16,19 @@ public class HallRegisterManager {
 	// 삭제
 	public void deleteManager() throws SQLException {
 		System.out.println("삭제할 상영관 번호를 입력해주세요.");
-		HallDAO cineDAO = new HallDAO();
+		HallDAO hallDAO = new HallDAO();
 		HallVO hvo = returnRightNo();
 		System.out.println("============================삭제대상 상영관============================");
 		HallPrint.printByCode(hvo);
 		System.out.println("=================================================================");
-		boolean flag = cineDAO.deleteDB(hvo);
+		boolean flag = hallDAO.deleteDB(hvo);
 		System.out.println((flag) ? "삭제성공" : "삭제실패");
 
 	}
 
 	// 업데이트
 	public void updateManager() throws SQLException {
-		HallDAO cineDAO = new HallDAO();
+		HallDAO hallDAO = new HallDAO();
 		System.out.print("수정할 상영관의 번호를 입력하세요 : ");
 		HallVO hvo = returnRightNo();
 		System.out.println("============================수정대상 상영관===============================");
@@ -52,14 +52,14 @@ public class HallRegisterManager {
 			price = hvo.getPrice();
 		}
 		hvo = new HallVO(hvo.getNo(), seats, price);
-		Boolean Flag = cineDAO.updateDB(hvo);
+		Boolean Flag = hallDAO.updateDB(hvo);
 		System.out.println((Flag) ? "수정성공" : "수정실패");
 	}
 
 	// 입력
 	public void insertManager() throws SQLException {
 
-		HallDAO cineDAO = new HallDAO();
+		HallDAO hallDAO = new HallDAO();
 		int seats = 0;
 		int price = 0;
 		System.out.println("좌석수를 입력해주세요.");
@@ -85,7 +85,7 @@ public class HallRegisterManager {
 		}
 		}
 		HallVO hvo = new HallVO(null, seats, price);
-		boolean flag = cineDAO.insertDB(hvo);
+		boolean flag = hallDAO.insertDB(hvo);
 		System.out.println((flag) ? "입력성공" : "입력실패");
 	}
 
@@ -113,14 +113,14 @@ public class HallRegisterManager {
 	public static HallVO returnRightNo() throws SQLException {
 		boolean exitFlag = false;
 		HallVO hvo = new HallVO();
-		HallDAO cineDAO = new HallDAO();
+		HallDAO hallDAO = new HallDAO();
 		while (!exitFlag) {
 			System.out.print(">>");
 			try {
 				int no = Integer.parseInt(sc.nextLine());
 				String sNo = String.valueOf(no);
 				hvo.setNo(sNo);
-				hvo = cineDAO.returnhvo(hvo);
+				hvo = hallDAO.returnhvo(hvo);
 				if (hvo.getSeats()!=0) {
 					exitFlag = true;
 

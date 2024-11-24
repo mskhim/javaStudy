@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import com.kh.theaterProject.model.BookingVO;
 
 public class BookingDAO {
-	private final String SELECT_SQL = "SELECT * FROM Booking ORDER BY NO";
-	private final String SELECT_BY_CODE_SQL = "SELECT * FROM Booking WHERE CODE = ?";
-	private final String SELECT_SORT_SQL = "SELECT * FROM Booking ORDER BY BOOKING_DATE";
+	private final String SELECT_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN ORDER BY NO";
+	private final String SELECT_BY_CODE_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN WHERE CODE = ?";
+	private final String SELECT_BY_CUSTOMER_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN WHERE CUSTOMER_NO = ?";
+	private final String SELECT_LAST_SQL = "SELECT * FROM (select * from BOOKING_PLAYING_CINEMA_HALL_JOIN order by booking_date desc) where rownum=1";
+	private final String SELECT_SORT_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN ORDER BY BOOKING_DATE";
 	private final String INSERT_SQL = "INSERT INTO Booking(NO,PLAYING_NO, CUSTOMER_NO, AMOUNT, BOOKING_DATE) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from Booking),'FM00000'), TO_CHAR(?,'FM000'), TO_CHAR(?,'FM00000'), ?,SYSDATE)";
 	private final String UPDATE_SQL = "UPDATE Booking SET PLAYING_NO = TO_CHAR(?,'FM000'), CUSTOMER_NO = TO_CHAR(?,'FM00000'), AMOUNT = ? WHERE NO = TO_CHAR(?,'FM00000') ";
@@ -80,7 +82,10 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate);
+			String cName = rs.getString("NAME");
+			String hName = rs.getString("PNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
@@ -105,14 +110,16 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate);
+			String cName = rs.getString("NAME");
+			String hName = rs.getString("PNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, stmt);
 		return BookingList;
 	}
-
 
 	// code가 들어있는 BookingVO를 받아서 그에 해당하는 db의 BookingVO를 반환
 	public BookingVO returnCodebvo(BookingVO bvo) throws SQLException {
@@ -131,7 +138,65 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate);
+			String cName = rs.getString("NAME");
+			String hName = rs.getString("PNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+		}
+//			stuListPrint(stuList);
+		DBUtility.dbClose(con, rs, pstmt);
+		return bvo;
+	}
+
+	// Customer_no가 들어있는 BookingVO를 받아서 그에 해당하는 db의 BookingVO를 반환
+	public ArrayList<BookingVO> returnCustomerList(BookingVO bvo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BookingVO> BookingList = new ArrayList<BookingVO>();
+		con = DBUtility.dbCon();
+		pstmt = con.prepareStatement(SELECT_BY_CUSTOMER_SQL);
+		pstmt.setString(1, bvo.getCustomer_no());
+		rs = pstmt.executeQuery();
+		while (rs.next()) {
+			String no = rs.getString("NO");
+			String playingNo = rs.getString("PLAYING_NO");
+			String customerNo = rs.getString("CUSTOMER_NO");
+			String code = rs.getString("CODE");
+			int amount = rs.getInt("AMOUNT");
+			int price = rs.getInt("PRICE");
+			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
+			String cName = rs.getString("NAME");
+			String hName = rs.getString("PNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
+			BookingList.add(bvo);
+		}
+//				stuListPrint(stuList);
+		DBUtility.dbClose(con, rs, pstmt);
+		return BookingList;
+	}
+
+	// 가장 최근 입력된 bvo를 리턴
+	public BookingVO returnLastbvo(BookingVO bvo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		con = DBUtility.dbCon();
+		pstmt = con.prepareStatement(SELECT_LAST_SQL);
+		rs = pstmt.executeQuery();
+		while (rs.next()) {
+			String no = rs.getString("NO");
+			String playingNo = rs.getString("PLAYING_NO");
+			String customerNo = rs.getString("CUSTOMER_NO");
+			String code = rs.getString("CODE");
+			int amount = rs.getInt("AMOUNT");
+			int price = rs.getInt("PRICE");
+			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
+			String cName = rs.getString("NAME");
+			String hName = rs.getString("PNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);
