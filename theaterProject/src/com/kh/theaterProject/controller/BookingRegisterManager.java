@@ -12,30 +12,11 @@ import com.kh.theaterProject.view.PlayingPrint;
 public class BookingRegisterManager {
 	public static Scanner sc = new Scanner(System.in);
 	
-	//로그인기능
-	public CustomerVO loginManager() throws SQLException {
-		CustomerVO cvo = new CustomerVO();
-		CustomerRegisterManager crm = new CustomerRegisterManager();
-		System.out.print("아이디를 입력해주세요 : ");
-		String id = sc.nextLine();
-		System.out.println();
-		System.out.print("비밀번호를 입력해주세요 : ");
-		String pwd = sc.nextLine();
-		cvo.setId(id);
-		cvo.setPwd(pwd);
-		cvo = crm.returnLogin(cvo);
-		if(cvo.getName()==null) {
-			System.out.println("로그인 실패");
-			return cvo;
-		}else {
-			System.out.println("환영합니다."+cvo.getName()+"고객님.");
-			return cvo;
-		}
-	}
+
 	
 	//예매기능
 	public void bookingManager(CustomerVO cvo) throws SQLException {
-			System.out.println("환영합니다."+cvo.getName()+"고객님.");
+			System.out.println("환영합니다. "+cvo.getName()+"고객님.");
 			BookingDAO bookDAO = new BookingDAO();
 			PlayingPrint.printAll();
 			System.out.println("상영정보를 입력해주세요.");
@@ -92,8 +73,7 @@ public class BookingRegisterManager {
 		System.out.println((flag) ? "삭제성공" : "삭제실패");
 
 	}
-	// 상영 종료된 영화 삭제해주는
-
+	
 	// 업데이트
 	public void updateManager() throws SQLException {
 		BookingDAO bookDAO = new BookingDAO();

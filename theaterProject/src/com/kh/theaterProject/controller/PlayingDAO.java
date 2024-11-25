@@ -13,13 +13,16 @@ import com.kh.theaterProject.model.PlayingVO;
 
 public class PlayingDAO {
 	private final String SELECT_SQL = "select * from PLAING_CINEMA_JOIN  ORDER BY STARTTIME";
+	private final String SELECT_STATUS_NULL_SQL = "select * from PLAING_CINEMA_JOIN WHERE STATUS IS NULL ORDER BY STARTTIME";
 	private final String SELECT_BY_NO_SQL = "select * from PLAING_CINEMA_JOIN WHERE NO = TO_CHAR(?,'FM000')";
 	private final String SELECT_SORT_SQL = "select * from PLAING_CINEMA_JOIN ORDER BY date";
 	private final String INSERT_SQL = "INSERT INTO Playing(NO,HALL_NO, CINEMA_NO, STARTTIME, REMAIN) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from Playing),'FM000'), TO_CHAR(?,'FM00'), TO_CHAR(?,'FM00'), ?,(select seats from hall where no=TO_CHAR(?,'FM00')))";
 	private final String UPDATE_SQL = "UPDATE Playing SET HALL_NO = TO_CHAR(?,'FM00'), CINEMA_NO = TO_CHAR(?,'FM00'), STARTTIME = ? WHERE NO = TO_CHAR(?,'FM000') ";
 	private final String DELETE_SQL = "DELETE FROM Playing WHERE NO = TO_CHAR(?,'FM000')";
-	private final String CALL_PROC_SQL = "{CALL PLAYING_STATUS_PROCEDURE()}";//현재시간과 비교해서 상영이 종료된 상영정보의 status를 null로 바꿔주는 프로시저 실행.
+	private final String DELETE_STATUS_NULL_SQL = "DELETE FROM Playing WHERE STATUS IS NULL";
+	private final String CALL_PROC_SQL = "{CALL PLAYING_STATUS_PROCEDURE()}";// 현재시간과 비교해서 상영이 종료된 상영정보의 status를 null로
+																				// 바꿔주는 프로시저 실행.
 
 	// PlayingVO를 받아서 db에 insert 후 성공여부 true false 반환
 	public boolean insertDB(PlayingVO pvo) throws SQLException {
@@ -66,6 +69,17 @@ public class PlayingDAO {
 		return (result != 0) ? true : false;
 	}
 
+	// STATUS가 NULL인 정보를 delete 후 성공여부 true false 반환
+	public boolean deleteDBnull() throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		con = DBUtility.dbCon();
+		pstmt = con.prepareStatement(DELETE_STATUS_NULL_SQL);
+		int result = pstmt.executeUpdate();
+		DBUtility.dbClose(con, pstmt);
+		return (result != 0) ? true : false;
+	}
+
 	// 테이블 전체를 List에 저장 후 반환
 	public ArrayList<PlayingVO> returnList() throws SQLException {
 		Connection con = null;
@@ -86,7 +100,35 @@ public class PlayingDAO {
 			int remain = rs.getInt("REMAIN");
 			String status = rs.getString("STATUS");
 			String cName = rs.getString("NAME");
-			PlayingVO pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status,cName);
+			PlayingVO pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
+			PlayingList.add(pvo);
+		}
+//		stuListPrint(stuList);
+		DBUtility.dbClose(con, rs, stmt, cstmt);
+		return PlayingList;
+	}
+
+	// status가 null인 테이블 전체를 List에 저장 후 반환
+	public ArrayList<PlayingVO> returnListNull() throws SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		ArrayList<PlayingVO> PlayingList = new ArrayList<PlayingVO>();
+		con = DBUtility.dbCon();
+		stmt = con.createStatement();
+		CallableStatement cstmt = null;
+		cstmt = con.prepareCall(CALL_PROC_SQL);
+		cstmt.executeUpdate();
+		rs = stmt.executeQuery(SELECT_STATUS_NULL_SQL);
+		while (rs.next()) {
+			String no = rs.getString("NO");
+			String hallNo = rs.getString("HALL_NO");
+			String cinemaNo = rs.getString("CINEMA_NO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			int remain = rs.getInt("REMAIN");
+			String status = rs.getString("STATUS");
+			String cName = rs.getString("NAME");
+			PlayingVO pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
 			PlayingList.add(pvo);
 		}
 //		stuListPrint(stuList);
@@ -141,13 +183,11 @@ public class PlayingDAO {
 			int remain = rs.getInt("REMAIN");
 			String status = rs.getString("STATUS");
 			String cName = rs.getString("NAME");
-			pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status,cName);
+			pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
 		}
 //		stuListPrint(stuList);
-		DBUtility.dbClose(con, rs, pstmt,cstmt);
+		DBUtility.dbClose(con, rs, pstmt, cstmt);
 		return pvo;
 	}
 
-	
-	
 }

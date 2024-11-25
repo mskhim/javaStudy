@@ -12,6 +12,7 @@ import com.kh.theaterProject.model.BookingVO;
 
 public class BookingDAO {
 	private final String SELECT_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN ORDER BY NO";
+	private final String SELECT_STATUS_NULL_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN WHERE STATUS IS NULL ORDER BY NO";
 	private final String SELECT_BY_CODE_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN WHERE CODE = ?";
 	private final String SELECT_BY_CUSTOMER_SQL = "SELECT * FROM BOOKING_PLAYING_CINEMA_HALL_JOIN WHERE CUSTOMER_NO = ?";
 	private final String SELECT_LAST_SQL = "SELECT * FROM (select * from BOOKING_PLAYING_CINEMA_HALL_JOIN order by booking_date desc) where rownum=1";
@@ -87,10 +88,42 @@ public class BookingDAO {
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
 			String status = rs.getString("STATUS");
 			String cusName = rs.getString("CUSNAME");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status,cusName);
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName,
+					startTime, status, cusName);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
+		DBUtility.dbClose(con, rs, stmt);
+		return BookingList;
+	}
+
+	// status가 null인 테이블 전체를 List에 저장 후 반환
+	public ArrayList<BookingVO> returnNullList() throws SQLException {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		ArrayList<BookingVO> BookingList = new ArrayList<BookingVO>();
+		con = DBUtility.dbCon();
+		stmt = con.createStatement();
+		rs = stmt.executeQuery(SELECT_STATUS_NULL_SQL);
+		while (rs.next()) {
+			String no = rs.getString("NO");
+			String playingNo = rs.getString("PLAYING_NO");
+			String customerNo = rs.getString("CUSTOMER_NO");
+			String code = rs.getString("CODE");
+			int amount = rs.getInt("AMOUNT");
+			int price = rs.getInt("PRICE");
+			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
+			String cName = rs.getString("CINENAME");
+			String hName = rs.getString("HNO");
+			Timestamp startTime = rs.getTimestamp("STARTTIME");
+			String status = rs.getString("STATUS");
+			String cusName = rs.getString("CUSNAME");
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName,
+					startTime, status, cusName);
+			BookingList.add(bvo);
+		}
+//			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, stmt);
 		return BookingList;
 	}
@@ -112,12 +145,13 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			String cName = rs.getString("NAME");
+			String cName = rs.getString("CINENAME");
 			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
 			String status = rs.getString("STATUS");
 			String cusName = rs.getString("CUSNAME");
-			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status,cusName);
+			BookingVO bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName,
+					startTime, status, cusName);
 			BookingList.add(bvo);
 		}
 //		stuListPrint(stuList);
@@ -142,12 +176,13 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			String cName = rs.getString("NAME");
+			String cName = rs.getString("CINENAME");
 			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
 			String status = rs.getString("STATUS");
 			String cusName = rs.getString("CUSNAME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status,cusName);
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName, startTime,
+					status, cusName);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);
@@ -172,12 +207,13 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			String cName = rs.getString("NAME");
+			String cName = rs.getString("CINENAME");
 			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
 			String status = rs.getString("STATUS");
 			String cusName = rs.getString("CUSNAME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status,cusName);
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName, startTime,
+					status, cusName);
 			BookingList.add(bvo);
 		}
 //				stuListPrint(stuList);
@@ -193,7 +229,7 @@ public class BookingDAO {
 		con = DBUtility.dbCon();
 		pstmt = con.prepareStatement(SELECT_LAST_SQL);
 		rs = pstmt.executeQuery();
-		
+
 		while (rs.next()) {
 			String no = rs.getString("NO");
 			String playingNo = rs.getString("PLAYING_NO");
@@ -202,12 +238,13 @@ public class BookingDAO {
 			int amount = rs.getInt("AMOUNT");
 			int price = rs.getInt("PRICE");
 			Timestamp bookingDate = rs.getTimestamp("BOOKING_DATE");
-			String cName = rs.getString("NAME");
+			String cName = rs.getString("CINENAME");
 			String hName = rs.getString("HNO");
 			Timestamp startTime = rs.getTimestamp("STARTTIME");
 			String status = rs.getString("STATUS");
 			String cusName = rs.getString("CUSNAME");
-			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate,cName,hName,startTime,status,cusName);
+			bvo = new BookingVO(no, playingNo, customerNo, code, amount, price, bookingDate, cName, hName, startTime,
+					status, cusName);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);

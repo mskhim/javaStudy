@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import com.kh.theaterProject.model.PlayingVO;
+import com.kh.theaterProject.view.BookingPrint;
 import com.kh.theaterProject.view.CinemaPrint;
 import com.kh.theaterProject.view.HallPrint;
 import com.kh.theaterProject.view.PlayingPrint;
@@ -17,7 +18,18 @@ public class PlayingRegisterManager {
 	public void selectManager() throws SQLException {
 		PlayingPrint.printAll();
 	}
-
+	//satus가 null인 영화들 삭제
+	public void deleteNullManager() throws SQLException {
+		PlayingDAO bDAO = new PlayingDAO();
+		PlayingPrint.printAllNull();
+	System.out.println("해당 정보들을 삭제합니다.(y/n)");
+	String text= sc.nextLine();
+	if(text.equals("y")) {
+		bDAO.deleteDBnull();
+		System.out.println("삭제가 완료되었습니다.");
+	}
+	}
+	
 	// 삭제
 	public void deleteManager() throws SQLException {
 		System.out.println("삭제할 상영정보 번호를 입력해주세요.");

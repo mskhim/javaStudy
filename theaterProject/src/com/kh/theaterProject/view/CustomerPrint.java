@@ -26,7 +26,7 @@ public class CustomerPrint {
 	}
 	
 	// no가들어있는 cvo를 받아서 그 cvo를 출력
-	public static void printByCode(CustomerVO cvo) throws SQLException {
+	public static void printByNo(CustomerVO cvo) throws SQLException {
 		CustomerDAO cusDAO = new CustomerDAO();
 		System.out.println(CustomerVO.getHeader()); 
 		System.out.println(cusDAO.returncvoByCode(cvo).toString());

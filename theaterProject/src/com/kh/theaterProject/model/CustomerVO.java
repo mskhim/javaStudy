@@ -11,6 +11,8 @@ public class CustomerVO {
 	private String phone;// VARCHAR2(20),                  --UQ핸드폰번호
 	private int bookCount;// NUMBER(3) DEFAULT 0,       --예매횟수
 	private Date registDate;// DATE NOT NULL  
+	
+	
 	public CustomerVO() {
 		super();
 	}
@@ -38,6 +40,8 @@ public class CustomerVO {
 		this.phone = phone;
 		this.registDate = registDate;
 	}
+	
+	
 	public String getNo() {
 		return no;
 	}

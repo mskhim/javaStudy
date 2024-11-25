@@ -18,6 +18,10 @@ public class BookingVO {
 	private String status;
 	
 	
+	public BookingVO() {
+		super();
+	}
+	
 	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
 			Timestamp booking_date,  String cName, String hName,Timestamp startTime,String status,String cusName) {
 		super();
@@ -36,9 +40,19 @@ public class BookingVO {
 		
 	}
 
-	public BookingVO() {
+	
+	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
+			Timestamp booking_date) {
 		super();
+		this.no = no;
+		this.playing_no = playing_no;
+		this.customer_no = customer_no;
+		this.code = code;
+		this.amount = amount;
+		this.price = price;
+		this.booking_date = booking_date;
 	}
+	
 
 	public BookingVO(String no, String playing_no, String customer_no, int amount, Timestamp booking_date) {
 		super();
@@ -52,17 +66,7 @@ public class BookingVO {
 	
 	
 	
-	public BookingVO(String no, String playing_no, String customer_no, String code, int amount, int price,
-			Timestamp booking_date) {
-		super();
-		this.no = no;
-		this.playing_no = playing_no;
-		this.customer_no = customer_no;
-		this.code = code;
-		this.amount = amount;
-		this.price = price;
-		this.booking_date = booking_date;
-	}
+
 
 	public String getNo() {
 		return no;
@@ -129,7 +133,7 @@ public class BookingVO {
 	@Override
 	public String toString() {
 		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s ", no, playing_no, customer_no,cusName,hallName+"관",cineName,formatStartTime(), code, amount,
-				price, booking_date,getStatusText());
+				price,bookingDateFormat(),getStatusText());
 	}
 	
     private String formatStartTime() {
@@ -139,6 +143,12 @@ public class BookingVO {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
         return sdf.format(startTime);
     }
+    
+    private String bookingDateFormat() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    	return sdf.format(booking_date);
+    }
+    
     private String getStatusText() {
         if (status == null) {
             return "만료";
