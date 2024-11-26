@@ -20,6 +20,7 @@ public class CustomerDAO {
 	private final String INSERT_RANDOM_SQL = "insert into CUSTOMER(no, NAME, ID, PWD, REGISTDATE) "
 			+ "VALUES(to_char((select nvl(max(no),0)+1 from CUSTOMER),'FM00000'),DBMS_RANDOM.string('U',5),DBMS_RANDOM.string('U',10),DBMS_RANDOM.string('U',10),sysdate)";
 	private final String UPDATE_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ?, PHONE = ? WHERE NO = ? ";
+	private final String UPDATE_ADMIN_SQL = "UPDATE customer SET NAME = ?, ID = ?, PWD = ?, BIRTH = ?, PHONE = ?, RIGHT = ? WHERE NO = ? ";
 	private final String DELETE_SQL = "DELETE FROM customer WHERE NO = TO_CHAR(?,'FM00000')";
 
 	// CustomerVO를 받아서 db에 insert 후 성공여부 true false 반환
@@ -42,6 +43,31 @@ public class CustomerDAO {
 		return (result1 != 0) ? true : false;
 	}
 
+	// 관리자용 CustomerVO를 받아서 db에 update, 권한 설정 가능 성공여부 true false 반환
+	public boolean updateAdiminDB(CustomerVO cvo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		con = DBUtility.dbCon();
+		int result1 = 0;
+		try {
+			
+			pstmt = con.prepareStatement(UPDATE_ADMIN_SQL);
+			pstmt.setString(1, cvo.getName());
+			pstmt.setString(2, cvo.getId());
+			pstmt.setString(3, cvo.getPwd());
+			pstmt.setDate(4, cvo.getBirth());
+			pstmt.setString(5, cvo.getPhone());
+			pstmt.setString(6, cvo.getRight());
+			pstmt.setString(7, cvo.getNo());
+			result1 = pstmt.executeUpdate();
+			DBUtility.dbClose(con, pstmt);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return (result1 != 0) ? true : false;
+	}
+
 	// 랜덤으로 insert 후 성공여부 true false 반환
 	public boolean insertRandomDB() throws SQLException {
 		// Conection
@@ -57,21 +83,21 @@ public class CustomerDAO {
 	}
 
 	// CustomerVO를 받아서 db에 update 후 성공여부 true false 반환
-	public boolean updateDB(CustomerVO cvo) throws SQLException  {
+	public boolean updateDB(CustomerVO cvo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		con = DBUtility.dbCon();
-		int result1=0;
-			pstmt = con.prepareStatement(UPDATE_SQL);
-			pstmt.setString(1, cvo.getName());
-			pstmt.setString(2, cvo.getId());
-			pstmt.setString(3, cvo.getPwd());
-			pstmt.setDate(4, cvo.getBirth());
-			pstmt.setString(5, cvo.getPhone());
-			pstmt.setString(6, cvo.getNo());
-			 result1= pstmt.executeUpdate();
-			DBUtility.dbClose(con, pstmt);
-			
+		int result1 = 0;
+		pstmt = con.prepareStatement(UPDATE_SQL);
+		pstmt.setString(1, cvo.getName());
+		pstmt.setString(2, cvo.getId());
+		pstmt.setString(3, cvo.getPwd());
+		pstmt.setDate(4, cvo.getBirth());
+		pstmt.setString(5, cvo.getPhone());
+		pstmt.setString(6, cvo.getNo());
+		result1 = pstmt.executeUpdate();
+		DBUtility.dbClose(con, pstmt);
+
 		return (result1 != 0) ? true : false;
 	}
 
@@ -88,7 +114,7 @@ public class CustomerDAO {
 	}
 
 	// 테이블 전체를 List에 저장 후 반환
-	public ArrayList<CustomerVO> retrunList() throws SQLException {
+	public ArrayList<CustomerVO> returnList() throws SQLException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -97,6 +123,7 @@ public class CustomerDAO {
 		stmt = con.createStatement();
 
 		rs = stmt.executeQuery(SELECT_SQL);
+		
 		while (rs.next()) {
 			String no = rs.getString("NO");
 			String name = rs.getString("NAME");
@@ -106,7 +133,8 @@ public class CustomerDAO {
 			String phone = rs.getString("PHONE");
 			int bookCount = rs.getInt("BOOKCOUNT");
 			Date registDate = rs.getDate("REGISTDATE");
-			CustomerVO cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate);
+			String right = rs.getString("RIGHT");
+			CustomerVO cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate, right);
 			customerList.add(cvo);
 		}
 //		stuListPrint(stuList);
@@ -142,7 +170,7 @@ public class CustomerDAO {
 	}
 
 	// no가 들어있는 CusotomerVO를 받아서 그에 해당하는 db의 CustomerVO를 반환
-	public CustomerVO returncvoByCode(CustomerVO cvo) throws SQLException {
+	public CustomerVO returncvoByNo(CustomerVO cvo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -159,13 +187,16 @@ public class CustomerDAO {
 			String phone = rs.getString("PHONE");
 			int bookCount = rs.getInt("BOOKCOUNT");
 			Date registDate = rs.getDate("REGISTDATE");
-			cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate);
+			String right = rs.getString("RIGHT");
+			cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate,right);
 		}
 //		stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);
 		return cvo;
 	}
 
+
+	
 	// id가 들어있는 CusotomerVO를 받아서 찾아서 반환
 	public CustomerVO returncvoById(CustomerVO cvo) throws SQLException {
 		Connection con = null;
@@ -184,7 +215,8 @@ public class CustomerDAO {
 			String phone = rs.getString("PHONE");
 			int bookCount = rs.getInt("BOOKCOUNT");
 			Date registDate = rs.getDate("REGISTDATE");
-			cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate);
+			String right = rs.getString("RIGHT");
+			cvo = new CustomerVO(no, name, id, pwd, Birth, phone, bookCount, registDate,right);
 		}
 //			stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);

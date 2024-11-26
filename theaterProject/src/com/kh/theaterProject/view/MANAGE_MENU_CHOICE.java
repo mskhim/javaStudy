@@ -6,6 +6,7 @@ public interface MANAGE_MENU_CHOICE {
 	int CINEMA= 3;
 	int PLAYING = 4;
 	int BOOKING = 5;
-	int END = 6;
+	int LOGOUT = 6;
+	int END = 7;
 
 }

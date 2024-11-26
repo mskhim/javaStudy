@@ -6,6 +6,7 @@ public interface MANAGE_SUB_MENU_CHOICE {
 	int UPDATE= 3;
 	int DELETE = 4;
 	int FIND = 5;
-	int END = 6;
+	int RIGHT = 6;
+	int END = 7;
 
 }

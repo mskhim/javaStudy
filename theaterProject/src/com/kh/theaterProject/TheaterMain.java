@@ -20,7 +20,7 @@ import com.kh.theaterProject.view.PlayingPrint;
 
 public class TheaterMain {
 	public static Scanner sc = new Scanner(System.in);
-	
+
 	// 메인
 	public static void main(String[] args) throws SQLException {
 		int no = 0;
@@ -33,10 +33,10 @@ public class TheaterMain {
 			} catch (Exception e) {
 				System.out.println("숫자를 입력해주세요.");
 			}
-			
+
 			switch (no) {
 			case MENU_CHOICE.LOGIN:
-				exitFlag = loginMenu(); 
+				exitFlag = loginMenu();
 				break;
 			case MENU_CHOICE.PRINTPLAYING:
 				PlayingPrint.printAll();
@@ -44,9 +44,9 @@ public class TheaterMain {
 			case MENU_CHOICE.REGISTER:
 				crm.insertRegistManager();
 				break;
-			case MENU_CHOICE.MANAGERMODE:
-				managerModeMenu();
-				break;
+//			case MENU_CHOICE.MANAGERMODE:
+//				managerModeMenu();
+//				break;
 			case MENU_CHOICE.END:
 				System.out.println("프로그램을 종료합니다.");
 				exitFlag = true;
@@ -59,8 +59,8 @@ public class TheaterMain {
 
 	}
 
-	// 관리자 모드 메뉴
-	private static void managerModeMenu() {
+	// 관리자 로그인 메뉴
+	private static boolean managerModeMenu() {
 		int no = 0;
 		boolean exitFlag = false;
 		while (!exitFlag) {
@@ -86,19 +86,23 @@ public class TheaterMain {
 			case MANAGE_MENU_CHOICE.BOOKING:
 				manageBookingMenu();
 				break;
+			case MANAGE_MENU_CHOICE.LOGOUT:
+				return false;
+
 			case MANAGE_MENU_CHOICE.END:
-				System.out.println("이전메뉴로 돌아갑니다.");
+				System.out.println("종료합니다.");
 				exitFlag = true;
-				break;
+				return true;
 			default:
 
 			}
 		}
+		return false;
 	}
 
 	// 관리자 모드의 예매 메뉴
 	private static void manageBookingMenu() {
-		BookingRegisterManager brm = new  BookingRegisterManager();
+		BookingRegisterManager brm = new BookingRegisterManager();
 		int no = 0;
 		boolean exitFlag = false;
 		while (!exitFlag) {
@@ -109,29 +113,28 @@ public class TheaterMain {
 				System.out.println("숫자를 입력해주세요.");
 			}
 			try {
-			switch (no) {
-			
-			case MANAGE_SUB_MENU_CHOICE.SELECT:
-					brm.selectManager();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.INSERT:
-				brm.insertManager();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.UPDATE:
-				brm.updateManager();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.DELETE:
-				
-				
-				brm.deleteManager();
-				break;
-			case MANAGE_SUB_MENU_CHOICE.END:
-				System.out.println("이전메뉴로 돌아갑니다.");
-				exitFlag = true;
-				break;
-			default:
+				switch (no) {
 
-			}
+				case MANAGE_SUB_MENU_CHOICE.SELECT:
+					brm.selectManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.INSERT:
+					brm.insertManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.UPDATE:
+					brm.updateManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.DELETE:
+
+					brm.deleteManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.END:
+					System.out.println("이전메뉴로 돌아갑니다.");
+					exitFlag = true;
+					break;
+				default:
+
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -165,15 +168,13 @@ public class TheaterMain {
 					break;
 				case MANAGE_SUB_MENU_CHOICE.DELETE:
 					playingDeleteMenu();
-					
-					
-				
+
 					break;
 				case MANAGE_SUB_MENU_CHOICE.FIND:
 					prm.findManager();
 					break;
 				case MANAGE_SUB_MENU_CHOICE.END:
-					
+
 					System.out.println("이전메뉴로 돌아갑니다.");
 					exitFlag = true;
 					break;
@@ -206,12 +207,12 @@ public class TheaterMain {
 				prm.deleteNullManager();
 			}
 			case 3: {
-				dExitFlag=true;
+				dExitFlag = true;
 			}
 			default:
 			}
 		}
-		
+
 	}
 
 	// 관리자 모드의 영화 메뉴
@@ -314,7 +315,7 @@ public class TheaterMain {
 			try {
 				switch (no) {
 				case MANAGE_SUB_MENU_CHOICE.SELECT:
-					crm.selectManager();
+					crm.selectAdminManager();
 					break;
 				case MANAGE_SUB_MENU_CHOICE.INSERT:
 					crm.insertRandomManager();
@@ -327,6 +328,9 @@ public class TheaterMain {
 					break;
 				case MANAGE_SUB_MENU_CHOICE.FIND:
 					crm.findManager();
+					break;
+				case MANAGE_SUB_MENU_CHOICE.RIGHT:
+					crm.updateAdminManager();
 					break;
 				case MANAGE_SUB_MENU_CHOICE.END:
 					System.out.println("이전메뉴로 돌아갑니다.");
@@ -346,7 +350,7 @@ public class TheaterMain {
 		BookingRegisterManager brm = new BookingRegisterManager();
 		int no = 0;
 		boolean exitFlag = false;
-		
+
 		while (!exitFlag) {
 			try {
 				System.out.println("1. 예매 취소하기 2. 예매 변경하기 3. 나가기");
@@ -376,32 +380,44 @@ public class TheaterMain {
 
 	// 로그인 메뉴
 	private static boolean loginMenu() throws SQLException {
-		BookingRegisterManager brm = new BookingRegisterManager();
+
 		CustomerRegisterManager crm = new CustomerRegisterManager();
 		CustomerVO cvo = crm.loginManager();
-		if(cvo.getName()==null) {
+		boolean returnFlag = false;
+		if (cvo.getName() == null) {
 			return false;
-		}else {
-			boolean exitFlag = false;
-			int num =0 ;
-			while(!exitFlag) {
-				MenuViewer.afterLoginMenuView(cvo);
+		} else {
+			if (cvo.getRight() != null && cvo.getRight().equals("admin")) {
+				returnFlag = managerModeMenu();
+			} else {
+				returnFlag = loginNomalMenu(cvo);
+			}
+		}
+		return returnFlag;
+	}
+
+	// 일반고객 로그인 메뉴
+	private static boolean loginNomalMenu(CustomerVO cvo) throws SQLException {
+		BookingRegisterManager brm = new BookingRegisterManager();
+		boolean exitFlag = false;
+		int num = 0;
+		while (!exitFlag) {
+			MenuViewer.afterLoginMenuView(cvo);
 			try {
 				num = Integer.parseInt(sc.nextLine());
-				
+
 			} catch (Exception e) {
 				System.out.println("숫자를 입력해주세요");
 				System.out.print(">>");
 			}
-			
-		
+
 			switch (num) {
 			case AFTER_LOGIN__MENU_CHOICE.BOOKING: {
-			brm.bookingManager(cvo);	
-			break;
+				brm.bookingManager(cvo);
+				break;
 			}
 			case AFTER_LOGIN__MENU_CHOICE.MYBOOKING: {
-			brm.bookingInquiryManager(cvo);
+				brm.bookingInquiryManager(cvo);
 				bookingInqueryMenu();
 				break;
 			}
@@ -426,43 +442,37 @@ public class TheaterMain {
 				System.out.println("입력한 메뉴 번호를 확인해주세요");
 				System.out.print(">>");
 			}
-			}
-			
 		}
-		return true;
+		return false;
 	}
 
 	// 마이페이지 메뉴
 	private static void myPageMenu(CustomerVO cvo) throws SQLException {
 		CustomerPrint.printByNo(cvo);
 		CustomerRegisterManager crm = new CustomerRegisterManager();
-		
+
 		System.out.println("1. 내정보 수정하기 2. 나가기");
 		System.out.print(">>");
 		boolean exitFlag = false;
-		int no = 0 ;
-		while(!exitFlag) {
-		System.out.print(">>");
-		try {
-			no = Integer.parseInt(sc.nextLine());
-			exitFlag=true;
-		} catch (Exception e) {
-			System.out.println("숫자를 입력해주세요");
-		}
-		}
-		exitFlag= false;
-		while(!exitFlag) {
-		switch (no) {
-		case 1: {
-			crm.updateMyDateManager(cvo);
-		}
-		case 2: {
-			System.out.println("이전 메뉴로 이동합니다.");
-			exitFlag= true;
-		}
-		}
+		int no = 0;
+		while (!exitFlag) {
+			System.out.print(">>");
+			try {
+				no = Integer.parseInt(sc.nextLine());
+				exitFlag = true;
+			} catch (Exception e) {
+				System.out.println("숫자를 입력해주세요");
+			}
+		exitFlag = false;
+			switch (no) {
+			case 1: {
+				crm.updateMyDateManager(cvo);
+			}
+			case 2: {
+				System.out.println("이전 메뉴로 이동합니다.");
+				exitFlag = true;
+			}
+			}
 		}
 	}
 }
-
-

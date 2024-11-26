@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import com.kh.theaterProject.model.PlayingVO;
-import com.kh.theaterProject.view.BookingPrint;
 import com.kh.theaterProject.view.CinemaPrint;
 import com.kh.theaterProject.view.HallPrint;
 import com.kh.theaterProject.view.PlayingPrint;
@@ -42,8 +41,6 @@ public class PlayingRegisterManager {
 		System.out.println((flag) ? "삭제성공" : "삭제실패");
 
 	}
-
-	// 상영 종료된 영화 삭제해주는
 
 	// 업데이트
 	public void updateManager() throws SQLException {

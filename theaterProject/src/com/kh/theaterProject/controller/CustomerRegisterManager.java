@@ -23,8 +23,8 @@ public class CustomerRegisterManager {
 
 	}
 
-	//내정보 업데이트
-	public void updateMyDateManager (CustomerVO cvo) throws SQLException {
+	// 내정보 업데이트
+	public void updateMyDateManager(CustomerVO cvo) throws SQLException {
 		CustomerDAO cusDAO = new CustomerDAO();
 		System.out.println("기존값 사용시 x 입력");
 		System.out.println("이름을 입력해 주세요.");
@@ -33,59 +33,7 @@ public class CustomerRegisterManager {
 		if (name.equals("x")) {
 			name = cvo.getName();
 		}
-		
-		System.out.println("비밀번호를 입력해주세요.");
-		System.out.print(">>");
-		String pwd = sc.nextLine();
-		if (pwd.equals("x")) {
-			pwd = cvo.getPwd();
-		}
-		System.out.println("생년월일을 입력해주세요. (yyyy-mm-dd생략하려면 x 입력 기존에 날짜가 없을경우 입력해야 수정가능)");
-		System.out.print(">>");
-		boolean exitFlag = false;
-		Date birth = null;
-		while (!exitFlag) {
-			String sBirth = sc.nextLine();
-			if (sBirth.equals("x")) {
-				birth = cvo.getBirth();
-				exitFlag = true;
-			} else {
-				try {
-					birth = Date.valueOf(sBirth);
-					exitFlag = true;
-				} catch (Exception e) {
-					System.out.println("날짜형식이 아닙니다.");
-					System.out.print("재입력 >>");
-				}
-			}
-		}
-		System.out.println("핸드폰번호를 입력해주세요.");
-		System.out.print(">>");
-		String phone = sc.nextLine();
-		if (phone.equals("x")) {
-			phone = cvo.getPhone();
-		}
-		cvo = new CustomerVO(cvo.getNo(), name, cvo.getId(), pwd, birth, phone, birth);
-		Boolean Flag = cusDAO.updateDB(cvo);
-		System.out.println((Flag) ? "수정성공" : "수정실패");
-	}
-	
-	// 업데이트
-	public void updateManager() throws SQLException {
-		CustomerDAO cusDAO = new CustomerDAO();
-		System.out.print("수정할 고객의 고객 번호를 입력하세요 : ");
-		CustomerVO cvo = returnRightNo();
-		System.out.println("============================수정할대상 고객============================");
-		CustomerPrint.printByNo(cvo);
-		System.out.println("===================================================================");
-		System.out.println("기존값 사용시 x 입력");
-		System.out.println("이름을 입력해 주세요.");
-		System.out.print(">>");
-		String name = sc.nextLine();
-		if (name.equals("x")) {
-			name = cvo.getName();
-		}
-		
+
 		System.out.println("비밀번호를 입력해주세요.");
 		System.out.print(">>");
 		String pwd = sc.nextLine();
@@ -122,9 +70,82 @@ public class CustomerRegisterManager {
 		System.out.println((Flag) ? "수정성공" : "수정실패");
 	}
 
+	// 업데이트
+	public void updateManager() throws SQLException {
+		CustomerDAO cusDAO = new CustomerDAO();
+		System.out.print("수정할 고객의 고객 번호를 입력하세요 : ");
+		CustomerVO cvo = returnRightNo();
+		System.out.println("============================수정할대상 고객============================");
+		CustomerPrint.printByNo(cvo);
+		System.out.println("===================================================================");
+		System.out.println("기존값 사용시 x 입력");
+		System.out.println("이름을 입력해 주세요.");
+		System.out.print(">>");
+		String name = sc.nextLine();
+		if (name.equals("x")) {
+			name = cvo.getName();
+		}
+
+		System.out.println("비밀번호를 입력해주세요.");
+		System.out.print(">>");
+		String pwd = sc.nextLine();
+		if (pwd.equals("x")) {
+			pwd = cvo.getPwd();
+		}
+		System.out.println("생년월일을 입력해주세요. (yyyy-mm-dd생략하려면 x 입력 기존에 날짜가 없을경우 입력해야 수정가능)");
+		System.out.print(">>");
+		boolean exitFlag = false;
+		Date birth = null;
+		while (!exitFlag) {
+			String sBirth = sc.nextLine();
+			if (sBirth.equals("x")) {
+				birth = cvo.getBirth();
+				exitFlag = true;
+			} else {
+				try {
+					birth = Date.valueOf(sBirth);
+					exitFlag = true;
+				} catch (Exception e) {
+					System.out.println("날짜형식이 아닙니다.");
+					System.out.print("재입력 >>");
+				}
+			}
+		}
+		System.out.println("핸드폰번호를 입력해주세요.");
+		System.out.print(">>");
+		String phone = sc.nextLine();
+		if (phone.equals("x")) {
+			phone = cvo.getPhone();
+		}
+		cvo = new CustomerVO(cvo.getNo(), name, cvo.getId(), pwd, birth, phone, birth);
+		Boolean Flag = cusDAO.updateDB(cvo);
+		System.out.println((Flag) ? "수정성공" : "수정실패");
+	}
+
+	// 관리자용 업데이트, 권한 부여기능 추가
+	public void updateAdminManager() throws SQLException {
+		CustomerDAO cusDAO = new CustomerDAO();
+		System.out.print("권한을 부여할 고객의 고객 번호를 입력하세요 : ");
+		CustomerVO cvo = returnRightNo();
+		System.out.println("============================수정할대상 고객============================");
+		CustomerPrint.printAdminByNo(cvo);
+		System.out.println("===================================================================");
+		System.out.println("권한을 입력해주세요. (admin or 아무값이나.)");
+		System.out.print(">>");
+		String right = sc.nextLine();
+		cvo.setRight(right);
+		Boolean Flag = cusDAO.updateAdiminDB(cvo);
+		System.out.println((Flag) ? "권한 부여 성공" : "실패");
+	}
+
 	// 출력
 	public void selectManager() throws SQLException {
 		CustomerPrint.printAll();
+	}
+
+	// 관리자용
+	public void selectAdminManager() throws SQLException {
+		CustomerPrint.printAdminAll();
 	}
 
 	// 찾기
@@ -263,7 +284,7 @@ public class CustomerRegisterManager {
 		System.out.println((flag) ? "입력성공" : "입력실패");
 	}
 
-	//로그인기능
+	// 로그인기능
 	public CustomerVO loginManager() throws SQLException {
 		CustomerVO cvo = new CustomerVO();
 		CustomerRegisterManager crm = new CustomerRegisterManager();
@@ -275,32 +296,31 @@ public class CustomerRegisterManager {
 		cvo.setId(id);
 		cvo.setPwd(pwd);
 		cvo = crm.returnLogin(cvo);
-		if(cvo.getName()==null) {
+		if (cvo.getName() == null) {
 			System.out.println("\n로그인 실패");
 			return cvo;
-		}else {
-			System.out.println("\n환영합니다."+cvo.getName()+"고객님.");
+		} else {
+
+			System.out.println("\n환영합니다." + cvo.getName() + "고객님.");
 			return cvo;
 		}
 	}
-	
-	//로그인 기능. 아이디, 비밀번호 확인후 해당하는 cvo 반환해준다. 없으면 빈cvo를 반환
+
+	// 로그인 기능. 아이디, 비밀번호 확인후 해당하는 cvo 반환해준다. 없으면 빈cvo를 반환
 	public CustomerVO returnLogin(CustomerVO cvo) throws SQLException {
 		CustomerDAO cusDAO = new CustomerDAO();
 		CustomerVO cvo2 = cusDAO.returncvoById(cvo);
-		if(cvo2.getName()==null) {
+		if (cvo2.getName() == null) {
 			return cvo;
-		}else {
-			if(cvo2.getPwd().equals(cvo.getPwd())) {
+		} else {
+			if (cvo2.getPwd().equals(cvo.getPwd())) {
 				return cvo2;
-			}
-			else {
+			} else {
 				return cvo;
 			}
 		}
 	}
-	
-	
+
 	// 해당 클래스 내부에서만 사용할 함수들
 	// 실행하면 존재하는 customer no가 나올떄까지 반복해서 올바른 CustomerVO를 반환해주는 함수
 	public static CustomerVO returnRightNo() throws SQLException {
@@ -313,8 +333,8 @@ public class CustomerRegisterManager {
 				int no = Integer.parseInt(sc.nextLine());
 				String sNo = String.valueOf(no);
 				cvo.setNo(sNo);
-				cvo = cusDAO.returncvoByCode(cvo);
-				if (cvo.getName()!=null) {
+				cvo = cusDAO.returncvoByNo(cvo);
+				if (cvo.getName() != null) {
 					exitFlag = true;
 
 				} else {
@@ -329,6 +349,5 @@ public class CustomerRegisterManager {
 		}
 		return cvo;
 	}
-	
 
 }

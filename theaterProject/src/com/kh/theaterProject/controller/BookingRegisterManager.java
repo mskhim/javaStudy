@@ -20,7 +20,6 @@ public class BookingRegisterManager {
 			BookingDAO bookDAO = new BookingDAO();
 			PlayingPrint.printAll();
 			System.out.println("상영정보를 입력해주세요.");
-			System.out.print(">>");
 			String playingNo = PlayingRegisterManager.returnRightNo().getNo();
 			String customerNo = cvo.getNo();
 			System.out.println("합계 인원을 작성해주세요.");
