@@ -353,7 +353,8 @@ public class TheaterMain {
 
 		while (!exitFlag) {
 			try {
-				System.out.println("1. 예매 취소하기 2. 예매 변경하기 3. 나가기");
+				MenuViewer.myPageBookingMenuView();
+
 				no = Integer.parseInt(sc.nextLine());
 			} catch (Exception e) {
 				System.out.println("숫자를 입력해주세요.");
@@ -450,9 +451,7 @@ public class TheaterMain {
 	private static void myPageMenu(CustomerVO cvo) throws SQLException {
 		CustomerPrint.printByNo(cvo);
 		CustomerRegisterManager crm = new CustomerRegisterManager();
-
-		System.out.println("1. 내정보 수정하기 2. 나가기");
-		System.out.print(">>");
+		MenuViewer.myPageMenuView();
 		boolean exitFlag = false;
 		int no = 0;
 		while (!exitFlag) {

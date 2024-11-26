@@ -35,8 +35,10 @@ public class BookingRegisterManager {
 	public void bookingInquiryManager(CustomerVO cvo) throws SQLException {
 		BookingVO bvo = new BookingVO();
 			System.out.println("고객님의 현재 예매 정보 입니다.");
+			System.out.println("=======================================================================================================================================================================");
 			bvo.setCustomer_no(cvo.getNo());
 			BookingPrint.printByCustomer(bvo);
+			System.out.println("=======================================================================================================================================================================");
 	}
 	
 	
@@ -50,9 +52,9 @@ public class BookingRegisterManager {
 		System.out.println("삭제할 예매코드를 입력해주세요.");
 		BookingDAO bookDAO = new BookingDAO();
 		BookingVO bvo = returnRightCode();
-		System.out.println("============================삭제대상 예매정보============================");
+		System.out.println("=======================================================================================================================================================================");
 		BookingPrint.printByCode(bvo);
-		System.out.println("====================================================================");
+		System.out.println("=======================================================================================================================================================================");
 		boolean flag = bookDAO.deleteDB(bvo);
 		System.out.println((flag) ? "삭제성공" : "삭제실패");
 
@@ -63,9 +65,9 @@ public class BookingRegisterManager {
 		System.out.println("취소할 예매코드를 입력해주세요.");
 		BookingDAO bookDAO = new BookingDAO();
 		BookingVO bvo = returnRightCode();
-		System.out.println("============================취소할 예매정보=============================");
+		System.out.println("=======================================================================================================================================================================");
 		BookingPrint.printByCode(bvo);
-		System.out.println("====================================================================");
+		System.out.println("=======================================================================================================================================================================");
 		bvo = new BookingVO(bvo.getNo(), bvo.getPlaying_no(), bvo.getCustomer_no(), bvo.getCode(), 0, bvo.getPrice(), null);
 		bookDAO.updateDB(bvo);
 		boolean flag = bookDAO.deleteDB(bvo);
@@ -78,9 +80,9 @@ public class BookingRegisterManager {
 		BookingDAO bookDAO = new BookingDAO();
 		System.out.print("변경할 예매정보의 코드를 입력하세요 : ");
 		BookingVO bvo = returnRightCode();
-		System.out.println("============================변경대상 예매정보===============================");
+		System.out.println("=======================================================================================================================================================================");
 		BookingPrint.printByCode(bvo);
-		System.out.println("====================================================================");
+		System.out.println("=======================================================================================================================================================================");
 		PlayingPrint.printAll();
 		System.out.println("새로운 상영정보를 입력해주세요.");
 		System.out.print(">>");
@@ -123,9 +125,9 @@ public class BookingRegisterManager {
 		bvo.setCode(code);
 		bvo = cusDAO.returnCodebvo(bvo);
 		if (bvo.getNo() != null) {
-			System.out.println("============================찾으신상영정보===============================");
+			System.out.println("=======================================================================================================================================================================");
 			BookingPrint.printByCode(bvo);
-			System.out.println("==================================================================");
+			System.out.println("=======================================================================================================================================================================");
 		} else {
 			System.out.println("존재하지 않는 상영정보입니다.");
 		}

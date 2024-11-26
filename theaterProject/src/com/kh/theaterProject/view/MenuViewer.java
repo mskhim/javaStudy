@@ -83,6 +83,21 @@ public class MenuViewer {
 	    	System.out.println("메뉴를 선택해주세요");
 	    	System.out.print(">> ");
 	    }
+
+		public static void myPageMenuView() {
+			System.out.println("----------------------------");
+			System.out.println("| 1. 내정보 수정하기 | 2. 나가기 |");
+			System.out.println("----------------------------");
+			System.out.print(">>");
+		}
+
+		public static void myPageBookingMenuView() {
+			System.out.println("-----------------------------------------");
+			System.out.println("| 1. 예매 취소하기 | 2. 예매 변경하기 | 3. 나가기 |");
+			System.out.println("-----------------------------------------");
+			System.out.print(">>");
+			
+		}
 	
 	    //전체 출력
 	    
