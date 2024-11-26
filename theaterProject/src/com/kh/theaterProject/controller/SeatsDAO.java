@@ -91,7 +91,7 @@ public class SeatsDAO {
 		return (result != 0) ? true : false;
 	}
 
-	// 테이블 전체를 List에 저장 후 반환
+	// svo를 받아서 해당 Playing_no를 이용해 테이블 전체를 List에 저장 후 반환
 	public ArrayList<SeatsVO> returnList(SeatsVO svo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;

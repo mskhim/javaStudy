@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+import com.kh.theaterProject.model.BookingVO;
 import com.kh.theaterProject.model.PlayingVO;
 import com.kh.theaterProject.view.CinemaPrint;
 import com.kh.theaterProject.view.HallPrint;
@@ -118,6 +119,7 @@ public class PlayingRegisterManager {
 		SeatsRegisterManager srm = new SeatsRegisterManager();
 		PlayingDAO cusDAO = new PlayingDAO();
 		PlayingVO pvo = new PlayingVO();
+		BookingVO bvo = new BookingVO();//seats출력을 위해서 필요.  
 		System.out.println("찾으려는 상영정보의 번호 입력해주세요.");
 		System.out.print(">>");
 		String no = sc.nextLine();
@@ -126,8 +128,9 @@ public class PlayingRegisterManager {
 		if (pvo.getNo() != null) {
 			System.out.println("============================찾으신상영정보===============================");
 			PlayingPrint.printByCode(pvo);
-			System.out.println("==================================================================");
-			SeatsPrint.printAllByList(srm.returnListByPVO(pvo));
+			System.out.println("====================================================================");
+			bvo.setPlaying_no(pvo.getNo());
+			SeatsPrint.printAllByList(srm.returnListByBVO(bvo));
 		} else {
 			System.out.println("존재하지 않는 상영정보입니다.");
 		}

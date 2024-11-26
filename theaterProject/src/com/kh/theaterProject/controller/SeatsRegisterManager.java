@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.kh.theaterProject.model.BookingVO;
-import com.kh.theaterProject.model.CustomerVO;
-import com.kh.theaterProject.model.PlayingVO;
 import com.kh.theaterProject.model.SeatsVO;
 import com.kh.theaterProject.view.SeatsPrint;
 
@@ -22,12 +20,8 @@ public class SeatsRegisterManager {
 	// seats를 업데이트 하는데 CustomerVO와, PALYINGVO를 받아서 customerNO, playingNo, amount, 사용할 예정임.
 	public void updateBookingManager(BookingVO bvo) throws SQLException {
 		SeatsDAO sDAO = new SeatsDAO();
-		PlayingVO pvo = new PlayingVO();
-		CustomerVO cvo = new CustomerVO();
-		pvo.setNo(bvo.getPlaying_no());
-		cvo.setNo(bvo.getCustomer_no());
 		ArrayList<SeatsVO> svoList = new ArrayList<SeatsVO>();
-		svoList = returnListByPVO(pvo);
+		svoList = returnListByBVO(bvo);
 		SeatsPrint.printAllByList(svoList);
 		System.out.println("현재 예매 현황입니다. 예매할 좌석 번호를 순서대로 입력해주세요.");
 		int count = 0;
@@ -38,7 +32,7 @@ public class SeatsRegisterManager {
 			int listCount=0;
 			for(SeatsVO data : svoList) {
 				if((data.getX()+data.getY()+"").equals(seat)&&data.getCustomerNo()==null) {
-					data.setCustomerNo(cvo.getNo());
+					data.setCustomerNo(bvo.getCustomer_no());
 					svoList.set(listCount, data);
 					exitFlag=true;
 				}
@@ -55,13 +49,13 @@ public class SeatsRegisterManager {
 	}
 
 	// 예매 취소시 좌석 변경
-	public void updateCancleManager(CustomerVO cvo, PlayingVO pvo) throws SQLException {
+	public void updateCancleManager(BookingVO bvo) throws SQLException {
 		SeatsDAO sDAO = new SeatsDAO();
 		ArrayList<SeatsVO> svoList = new ArrayList<SeatsVO>();
-		svoList = returnListByPVO(pvo);
+		svoList = returnListByBVO(bvo);
 			int listCount=0;
 			for(SeatsVO data : svoList) {
-				if(data.getCustomerNo()!=null&&data.getCustomerNo().equals(cvo.getNo())) {
+				if(data.getCustomerNo()!=null&&data.getCustomerNo().equals(bvo.getCustomer_no())) {
 					data.setCustomerNo(null);
 					svoList.set(listCount, data);
 				}
@@ -72,13 +66,11 @@ public class SeatsRegisterManager {
 		}
 	
 	//PlayingVO를 받아서 해당 상영정보에 일치하는 SeatsVO 전체를 ArrayList에 담아서 반환.
-	public ArrayList<SeatsVO> returnListByPVO(PlayingVO pvo) throws SQLException {
+	public ArrayList<SeatsVO> returnListByBVO(BookingVO bvo) throws SQLException {
 		SeatsDAO seatsDAO = new SeatsDAO();
 		ArrayList<SeatsVO> svoList = new ArrayList<SeatsVO>();
-		PlayingDAO pDAO = new PlayingDAO();
 		SeatsVO svo = new SeatsVO();
-		pvo= pDAO.returnpvo(pvo);
-		svo.setPlayingNo(pvo.getNo());// hall정보도 받아서 hall의 col 값도 뽑아와야함.
+		svo.setPlayingNo(bvo.getPlaying_no());
 		for (SeatsVO data : seatsDAO.returnList(svo)) {
 			svoList.add(data);
 		}

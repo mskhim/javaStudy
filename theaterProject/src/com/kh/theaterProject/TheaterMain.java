@@ -126,8 +126,7 @@ public class TheaterMain {
 					brm.updateManager();
 					break;
 				case MANAGE_SUB_MENU_CHOICE.DELETE:
-
-					brm.deleteManager();
+					brm.deleteCancleManager();
 					break;
 				case MANAGE_SUB_MENU_CHOICE.END:
 					System.out.println("이전메뉴로 돌아갑니다.");
@@ -195,7 +194,9 @@ public class TheaterMain {
 		PlayingRegisterManager prm = new PlayingRegisterManager();
 		boolean dExitFlag = false;
 		while (!dExitFlag) {
-			System.out.println("1.상영정보 삭제 2. 만료된 상영정보 삭제 2. 뒤로가기");
+			System.out.println("----------------------------------------------");
+			System.out.println("| 1.상영정보 삭제 | 2. 만료된 상영정보 삭제 | 3. 뒤로가기 |");
+			System.out.println("----------------------------------------------");
 			try {
 				dNo = Integer.parseInt(sc.nextLine());
 			} catch (Exception e) {

@@ -13,7 +13,7 @@ public class SeatsPrint {
 	public static void printAllByList(ArrayList<SeatsVO> svoList) throws SQLException {
 		HallDAO hDAO = new HallDAO();
 		HallVO hvo = new HallVO();
-		hvo.setNo(svoList.get(0).getHallNo());
+		hvo.setNo(svoList.get(1).getHallNo());
 		hvo = hDAO.returnhvo(hvo);
 		System.out.println("=========================예매 현황=========================");
 		int count = 0;
