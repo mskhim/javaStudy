@@ -34,14 +34,22 @@ public class HallRegisterManager {
 		System.out.println("============================수정대상 상영관===============================");
 		HallPrint.printByCode(hvo);
 		System.out.println("====================================================================");
-		System.out.println("기존값 사용시 x 입력");
-		System.out.println("좌석수를 입력해주세요.");
+		System.out.println("행의 숫자를 입력해주세요");
 		System.out.print(">>");
-		int seats = 0;
+		int row = 0;
+		
 		try {
-			seats = Integer.parseInt(sc.nextLine());
+			row = Integer.parseInt(sc.nextLine());
 		} catch (Exception e) {
-			seats = hvo.getPrice();
+			row = hvo.getRow(); 
+		}
+		System.out.println("열의 숫자를 입력해주세요");
+		System.out.print(">>");
+		int col = 0;
+		try {
+			col = Integer.parseInt(sc.nextLine());
+		} catch (Exception e) {
+			col = hvo.getCol();
 		}
 		System.out.println("상영요금을 입력해주세요.");
 		System.out.print(">>");
@@ -51,7 +59,7 @@ public class HallRegisterManager {
 		} catch (Exception e) {
 			price = hvo.getPrice();
 		}
-		hvo = new HallVO(hvo.getNo(), seats, price);
+		hvo = new HallVO(hvo.getNo(), price,row,col);
 		Boolean Flag = hallDAO.updateDB(hvo);
 		System.out.println((Flag) ? "수정성공" : "수정실패");
 	}
@@ -60,21 +68,33 @@ public class HallRegisterManager {
 	public void insertManager() throws SQLException {
 
 		HallDAO hallDAO = new HallDAO();
-		int seats = 0;
 		int price = 0;
-		System.out.println("좌석수를 입력해주세요.");
-		while(seats==0) {
+		int row = 0 ;
+		int col = 0 ;
+		System.out.println("행의 숫자를 입력해주세요.");
+		while(row==0) {
 		System.out.print(">>");
 		try {
-			seats = Integer.parseInt(sc.nextLine());
+			row = Integer.parseInt(sc.nextLine());
 		} catch (Exception e) {
 			System.out.println("숫자를 입력해주세요");
 			System.out.print("재입력 >>");
-			seats=0;
+			row=0;
+		}
+		}
+		System.out.println("열의 숫자를 입력해주세요.");
+		while(col==0) {
+		System.out.print(">>");
+		try {
+			col = Integer.parseInt(sc.nextLine());
+		} catch (Exception e) {
+			System.out.println("숫자를 입력해주세요");
+			System.out.print("재입력 >>");
+			col=0;
+		}
 		}
 		System.out.println("상영요금을 입력해주세요.");
 		System.out.print(">>");
-		}
 		while(price==0) {
 		try {
 			price = Integer.parseInt(sc.nextLine());
@@ -84,7 +104,7 @@ public class HallRegisterManager {
 			price=0;
 		}
 		}
-		HallVO hvo = new HallVO(null, seats, price);
+		HallVO hvo = new HallVO(null, price,row,col);
 		boolean flag = hallDAO.insertDB(hvo);
 		System.out.println((flag) ? "입력성공" : "입력실패");
 	}

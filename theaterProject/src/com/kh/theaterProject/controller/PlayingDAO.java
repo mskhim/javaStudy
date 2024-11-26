@@ -81,16 +81,18 @@ public class PlayingDAO {
 	}
 
 	// 테이블 전체를 List에 저장 후 반환
-	public ArrayList<PlayingVO> returnList() throws SQLException {
+	public ArrayList<PlayingVO> returnList(){
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		ArrayList<PlayingVO> PlayingList = new ArrayList<PlayingVO>();
 		con = DBUtility.dbCon();
-		stmt = con.createStatement();
 		CallableStatement cstmt = null;
-		cstmt = con.prepareCall(CALL_PROC_SQL);
-		cstmt.executeUpdate();
+		PlayingVO pvo = null;
+		try {
+		stmt = con.createStatement();
+			cstmt = con.prepareCall(CALL_PROC_SQL);
+			cstmt.executeUpdate();
 		rs = stmt.executeQuery(SELECT_SQL);
 		while (rs.next()) {
 			String no = rs.getString("NO");
@@ -100,8 +102,12 @@ public class PlayingDAO {
 			int remain = rs.getInt("REMAIN");
 			String status = rs.getString("STATUS");
 			String cName = rs.getString("NAME");
-			PlayingVO pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
+			pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
 			PlayingList.add(pvo);
+		} 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 //		stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, stmt, cstmt);

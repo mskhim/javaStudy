@@ -12,10 +12,10 @@ import com.kh.theaterProject.model.HallVO;
 public class HallDAO {
 	private final String SELECT_SQL = "SELECT * FROM Hall ORDER BY NO";
 	private final String SELECT_BY_NO_SQL = "SELECT * FROM Hall WHERE NO = TO_CHAR(?,'FM00')";
-	private final String SELECT_SORT_SQL = "SELECT * FROM Hall ORDER BY PRICE desc";
-	private final String INSERT_SQL = "INSERT INTO Hall(NO, SEATS, PRICE) "
-			+ "VALUES(to_char((select nvl(max(no),0)+1 from Hall),'FM00'), ?, ?)";
-	private final String UPDATE_SQL = "UPDATE Hall SET SEATS = ?, PRICE = ? WHERE NO = TO_CHAR(?,'FM00') ";
+//	private final String SELECT_SORT_SQL = "SELECT * FROM Hall ORDER BY PRICE desc";
+	private final String INSERT_SQL = "INSERT INTO Hall(NO, PRICE, ROWX,COLY) "
+			+ "VALUES(to_char((select nvl(max(no),0)+1 from Hall),'FM00'), ?, ?, ?)";
+	private final String UPDATE_SQL = "UPDATE Hall SET PRICE = ?, ROWX = ?, COLY = ? WHERE NO = TO_CHAR(?,'FM00') ";
 	private final String DELETE_SQL = "DELETE FROM Hall WHERE NO = TO_CHAR(?,'FM00')";
 
 	// HallVO를 받아서 db에 insert 후 성공여부 true false 반환
@@ -27,8 +27,9 @@ public class HallDAO {
 		con = DBUtility.dbCon();
 		// 3.statement
 		pstmt = con.prepareStatement(INSERT_SQL);
-		pstmt.setInt(1, hvo.getSeats());
-		pstmt.setInt(2, hvo.getPrice());
+		pstmt.setInt(1, hvo.getPrice());
+		pstmt.setInt(2, hvo.getRow());
+		pstmt.setInt(3, hvo.getCol());
 		int result1 = pstmt.executeUpdate();
 		DBUtility.dbClose(con, pstmt);
 		return (result1 != 0) ? true : false;
@@ -41,9 +42,10 @@ public class HallDAO {
 		PreparedStatement pstmt = null;
 		con = DBUtility.dbCon();
 		pstmt = con.prepareStatement(UPDATE_SQL);
-		pstmt.setInt(1, hvo.getSeats());
-		pstmt.setInt(2, hvo.getPrice());
-		pstmt.setString(3, hvo.getNo());
+		pstmt.setInt(1, hvo.getPrice());
+		pstmt.setInt(2, hvo.getRow());
+		pstmt.setInt(3, hvo.getCol());
+		pstmt.setString(4, hvo.getNo());
 		int result1 = pstmt.executeUpdate();
 		DBUtility.dbClose(con, pstmt);
 		return (result1 != 0) ? true : false;
@@ -62,7 +64,7 @@ public class HallDAO {
 	}
 
 	// 테이블 전체를 List에 저장 후 반환
-	public ArrayList<HallVO> retrunList() throws SQLException {
+	public ArrayList<HallVO> returnList() throws SQLException {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -75,7 +77,9 @@ public class HallDAO {
 			String no = rs.getString("NO");
 			int seats = rs.getInt("SEATS");
 			int price = rs.getInt("PRICE");
-			HallVO hvo = new HallVO(no, seats, price);
+			int row = rs.getInt("ROWX");
+			int col = rs.getInt("COLY");
+			HallVO hvo = new HallVO(no, seats, price,row,col);
 			HallList.add(hvo);
 		}
 //		stuListPrint(stuList);
@@ -83,27 +87,7 @@ public class HallDAO {
 		return HallList;
 	}
 
-	// 테이블을 러닝타임순으로 정렬후 List 반환
-	public ArrayList<HallVO> returnSortList() throws SQLException {
-		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		ArrayList<HallVO> HallList = new ArrayList<HallVO>();
-		con = DBUtility.dbCon();
-		stmt = con.createStatement();
-
-		rs = stmt.executeQuery(SELECT_SORT_SQL);
-		while (rs.next()) {
-			String no = rs.getString("NO");
-			int seats = rs.getInt("SEATS");
-			int price = rs.getInt("PRICE");
-			HallVO hvo = new HallVO(no, seats, price);
-			HallList.add(hvo);
-		}
-//		stuListPrint(stuList);
-		DBUtility.dbClose(con, rs, stmt);
-		return HallList;
-	}
+	
 
 	// no가 들어있는 CusotomerVO를 받아서 그에 해당하는 db의 HallVO를 반환
 	public HallVO returnhvo(HallVO hvo) throws SQLException {
@@ -118,7 +102,9 @@ public class HallDAO {
 			String no = rs.getString("NO");
 			int seats = rs.getInt("SEATS");
 			int price = rs.getInt("PRICE");
-			hvo = new HallVO(no, seats, price);
+			int row = rs.getInt("ROWX");
+			int col = rs.getInt("COLY");
+			hvo = new HallVO(no, seats, price,row,col);
 		}
 //		stuListPrint(stuList);
 		DBUtility.dbClose(con, rs, pstmt);

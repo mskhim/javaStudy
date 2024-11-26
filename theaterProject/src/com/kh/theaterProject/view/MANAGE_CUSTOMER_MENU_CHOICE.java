@@ -1,11 +1,12 @@
 package com.kh.theaterProject.view;
 
-public interface MANAGE_SUB_MENU_CHOICE {
+public interface MANAGE_CUSTOMER_MENU_CHOICE {
 	int SELECT = 1;
 	int INSERT = 2;
 	int UPDATE= 3;
 	int DELETE = 4;
 	int FIND = 5;
-	int END = 6;
+	int RIGHT = 6;
+	int END = 7;
 
 }

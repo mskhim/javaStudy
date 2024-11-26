@@ -125,14 +125,14 @@ public class BookingVO {
 	}
 
 	public static String getHeader() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s", "No", "Playing No", "Customer No","Customer Name","hall","Cinema Name","Start Time", "Code",
+		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-10s", "Code","Customer Name","hall","Cinema Name","Start Time", 
 				"Amount", "Price", "Booking Date","Status");
 	}
 
 	// 데이터 출력 부분
 	@Override
 	public String toString() {
-		return String.format("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-20s %-10s %-10s %-20s %-10s ", no, playing_no, customer_no,cusName,hallName+"관",cineName,formatStartTime(), code, amount,
+		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-10s ", code,cusName,hallName+"관",cineName,formatStartTime(),  amount,
 				price,bookingDateFormat(),getStatusText());
 	}
 	

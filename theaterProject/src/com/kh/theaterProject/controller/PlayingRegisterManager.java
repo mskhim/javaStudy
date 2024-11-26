@@ -9,6 +9,7 @@ import com.kh.theaterProject.model.PlayingVO;
 import com.kh.theaterProject.view.CinemaPrint;
 import com.kh.theaterProject.view.HallPrint;
 import com.kh.theaterProject.view.PlayingPrint;
+import com.kh.theaterProject.view.SeatsPrint;
 
 public class PlayingRegisterManager {
 	public static Scanner sc = new Scanner(System.in);
@@ -114,6 +115,7 @@ public class PlayingRegisterManager {
 
 	// 찾기
 	public void findManager() throws SQLException {
+		SeatsRegisterManager srm = new SeatsRegisterManager();
 		PlayingDAO cusDAO = new PlayingDAO();
 		PlayingVO pvo = new PlayingVO();
 		System.out.println("찾으려는 상영정보의 번호 입력해주세요.");
@@ -125,6 +127,7 @@ public class PlayingRegisterManager {
 			System.out.println("============================찾으신상영정보===============================");
 			PlayingPrint.printByCode(pvo);
 			System.out.println("==================================================================");
+			SeatsPrint.printAllByList(srm.returnListByPVO(pvo));
 		} else {
 			System.out.println("존재하지 않는 상영정보입니다.");
 		}

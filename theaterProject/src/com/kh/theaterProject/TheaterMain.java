@@ -11,6 +11,7 @@ import com.kh.theaterProject.controller.PlayingRegisterManager;
 import com.kh.theaterProject.model.CustomerVO;
 import com.kh.theaterProject.view.AFTER_LOGIN__MENU_CHOICE;
 import com.kh.theaterProject.view.CustomerPrint;
+import com.kh.theaterProject.view.MANAGE_CUSTOMER_MENU_CHOICE;
 import com.kh.theaterProject.view.MANAGE_MENU_CHOICE;
 import com.kh.theaterProject.view.MANAGE_SUB_MENU_CHOICE;
 import com.kh.theaterProject.view.MENU_BOOKING_INQUERY;
@@ -39,7 +40,7 @@ public class TheaterMain {
 				exitFlag = loginMenu();
 				break;
 			case MENU_CHOICE.PRINTPLAYING:
-				PlayingPrint.printAll();
+				playingSelectMenu();
 				break;
 			case MENU_CHOICE.REGISTER:
 				crm.insertRegistManager();
@@ -187,7 +188,8 @@ public class TheaterMain {
 		}
 
 	}
-
+	
+	//관리자모드의 상영정보 삭제매뉴
 	private static void playingDeleteMenu() throws SQLException {
 		int dNo = 0;
 		PlayingRegisterManager prm = new PlayingRegisterManager();
@@ -202,9 +204,11 @@ public class TheaterMain {
 			switch (dNo) {
 			case 1: {
 				prm.deleteManager();
+				break;
 			}
 			case 2: {
 				prm.deleteNullManager();
+				break;
 			}
 			case 3: {
 				dExitFlag = true;
@@ -314,25 +318,25 @@ public class TheaterMain {
 			}
 			try {
 				switch (no) {
-				case MANAGE_SUB_MENU_CHOICE.SELECT:
+				case MANAGE_CUSTOMER_MENU_CHOICE.SELECT:
 					crm.selectAdminManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.INSERT:
+				case MANAGE_CUSTOMER_MENU_CHOICE.INSERT:
 					crm.insertRandomManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.UPDATE:
+				case MANAGE_CUSTOMER_MENU_CHOICE.UPDATE:
 					crm.updateManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.DELETE:
+				case MANAGE_CUSTOMER_MENU_CHOICE.DELETE:
 					crm.deleteManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.FIND:
+				case MANAGE_CUSTOMER_MENU_CHOICE.FIND:
 					crm.findManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.RIGHT:
+				case MANAGE_CUSTOMER_MENU_CHOICE.RIGHT:
 					crm.updateAdminManager();
 					break;
-				case MANAGE_SUB_MENU_CHOICE.END:
+				case MANAGE_CUSTOMER_MENU_CHOICE.END:
 					System.out.println("이전메뉴로 돌아갑니다.");
 					exitFlag = true;
 					break;
@@ -427,7 +431,9 @@ public class TheaterMain {
 				break;
 			}
 			case AFTER_LOGIN__MENU_CHOICE.PRINTPLAYING: {
-				PlayingPrint.printAll();
+				playingSelectMenu();
+				
+				
 				break;
 			}
 			case AFTER_LOGIN__MENU_CHOICE.LOGOUT: {
@@ -445,6 +451,30 @@ public class TheaterMain {
 			}
 		}
 		return false;
+	}
+	
+	//상영정보를 출력후, 선택지로 상영정보의 예매현황을 보여주는 기능
+	private static void playingSelectMenu() throws SQLException {
+		PlayingRegisterManager prm = new PlayingRegisterManager();
+		PlayingPrint.printAll();
+		System.out.println("----------------------------");
+		System.out.println("| 1. 잔여 좌석 확인 | 2. 뒤로가기 |");
+		System.out.println("----------------------------");
+		System.out.print(">>");
+		int num = 0;
+		while(num==0) {
+		try {
+			num = Integer.parseInt(sc.nextLine());
+		} catch (Exception e) {
+			System.out.println("숫자를 입력해주세요.");
+			System.out.print(">>");
+		}
+		}
+		if(num==2) {
+			return;
+		}if(num==1) {
+			prm.findManager();
+		}
 	}
 
 	// 마이페이지 메뉴

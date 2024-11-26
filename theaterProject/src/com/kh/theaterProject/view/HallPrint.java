@@ -11,7 +11,7 @@ public class HallPrint {
 	public static void printAll() throws SQLException {
 		HallDAO cineDAO = new HallDAO();
 		System.out.println(HallVO.getHeader());
-		for (HallVO data : cineDAO.retrunList()) {
+		for (HallVO data : cineDAO.returnList()) {
 			System.out.println(data.toString());
 		}
 	}
@@ -20,7 +20,7 @@ public class HallPrint {
 	public static void printSortAll() throws SQLException {
 		HallDAO cineDAO = new HallDAO();
 		System.out.println(HallVO.getHeader());
-		for (HallVO data : cineDAO.returnSortList()) {
+		for (HallVO data : cineDAO.returnList()) {
 			System.out.println(data.toString());
 		}
 	}
