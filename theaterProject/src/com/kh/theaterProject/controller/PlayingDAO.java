@@ -14,6 +14,7 @@ import com.kh.theaterProject.model.PlayingVO;
 public class PlayingDAO {
 	private final String SELECT_SQL = "select * from PLAING_CINEMA_JOIN  ORDER BY NO";
 	private final String SELECT_STATUS_NULL_SQL = "select * from PLAING_CINEMA_JOIN WHERE STATUS IS NULL ORDER BY NO";
+	private final String SELECT_STATUS__NOT_NULL_SQL = "select * from PLAING_CINEMA_JOIN WHERE STATUS IS NOT NULL ORDER BY NO";
 	private final String SELECT_BY_NO_SQL = "select * from PLAING_CINEMA_JOIN WHERE NO = TO_CHAR(?,'FM000')";
 	private final String SELECT_SORT_SQL = "select * from PLAING_CINEMA_JOIN ORDER BY date";
 	private final String INSERT_SQL = "INSERT INTO Playing(NO,HALL_NO, CINEMA_NO, STARTTIME, REMAIN) "
@@ -142,6 +143,35 @@ public class PlayingDAO {
 		return PlayingList;
 	}
 
+	// status가 null인 테이블 전체를 List에 저장 후 반환
+		public ArrayList<PlayingVO> returnListNotNull() throws SQLException {
+			Connection con = null;
+			Statement stmt = null;
+			ResultSet rs = null;
+			ArrayList<PlayingVO> PlayingList = new ArrayList<PlayingVO>();
+			con = DBUtility.dbCon();
+			stmt = con.createStatement();
+			CallableStatement cstmt = null;
+			cstmt = con.prepareCall(CALL_PROC_SQL);
+			cstmt.executeUpdate();
+			rs = stmt.executeQuery(SELECT_STATUS__NOT_NULL_SQL);
+			while (rs.next()) {
+				String no = rs.getString("NO");
+				String hallNo = rs.getString("HALL_NO");
+				String cinemaNo = rs.getString("CINEMA_NO");
+				Timestamp startTime = rs.getTimestamp("STARTTIME");
+				int remain = rs.getInt("REMAIN");
+				String status = rs.getString("STATUS");
+				String cName = rs.getString("NAME");
+				PlayingVO pvo = new PlayingVO(no, hallNo, cinemaNo, startTime, remain, status, cName);
+				PlayingList.add(pvo);
+			}
+//			stuListPrint(stuList);
+			DBUtility.dbClose(con, rs, stmt, cstmt);
+			return PlayingList;
+		}
+
+	
 	// 테이블을 러닝타임순으로 정렬후 List 반환
 	public ArrayList<PlayingVO> returnSortList() throws SQLException {
 		Connection con = null;

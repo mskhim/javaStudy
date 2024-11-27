@@ -25,6 +25,16 @@ public class PlayingPrint {
 		}
 	}
 	
+	// status가 null이 아닌 리스트를 출력요청
+	public static void printAllNotNull() throws SQLException {
+		PlayingDAO cineDAO = new PlayingDAO();
+		System.out.println(PlayingVO.getHeader());
+		for (PlayingVO data : cineDAO.returnListNotNull()) {
+			System.out.println(data.toString());
+		}
+	}
+	
+	
 	// 전체 예매순 정렬 고객 리스트를 출력요청
 	public static void printSortAll() throws SQLException {
 		PlayingDAO cineDAO = new PlayingDAO();

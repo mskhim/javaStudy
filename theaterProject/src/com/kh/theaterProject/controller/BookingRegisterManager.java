@@ -20,12 +20,21 @@ public class BookingRegisterManager {
 		SeatsRegisterManager srm = new SeatsRegisterManager();
 			System.out.println("환영합니다. "+cvo.getName()+"고객님.");
 			BookingDAO bookDAO = new BookingDAO();
-			PlayingPrint.printAll();//상영정보 전체 출력
+			PlayingPrint.printAllNotNull();//상영정보 전체 출력
 			System.out.println("상영정보를 입력해주세요.");
 			PlayingVO pvo = PlayingRegisterManager.returnRightNo();//유효한 상영정보가 나올때까지 반복한뒤 해당 pvo를저장
+			System.out.println(pvo);
+			if(pvo.getStatus()==null||!pvo.getStatus().equals("0")) {
+				System.out.println("종료되었거나 상영중입니다.");
+				return;
+			}
 			System.out.println("합계 인원을 작성해주세요.");
 			System.out.print(">>");
 			int amount = Integer.parseInt(sc.nextLine());
+			if(pvo.getRemain()<amount) {
+				System.out.println("예매하려는 인원이 잔여 좌석보다 많습니다.");
+				return;
+			}
 			BookingVO bvo = new BookingVO(null, pvo.getNo(), cvo.getNo(), amount, null);//bvo에 정보 추가
 			boolean flag = bookDAO.insertDB(bvo);//Bookingtable에 정보 추가
 			bvo=bookDAO.returnLastbvo(bvo);//마지막에 추가한 bvo를 반환
@@ -81,6 +90,7 @@ public class BookingRegisterManager {
 	// 예매 변경과정은 코드를받아서 확인, 해당 예약에 맞는 좌석정보는 삭제후 재입력.
 	public void updateManager() throws SQLException {
 		BookingDAO bookDAO = new BookingDAO();
+		PlayingVO pvo = new PlayingVO();
 		SeatsRegisterManager srm = new SeatsRegisterManager();
 		System.out.print("변경할 예매정보의 코드를 입력하세요 : ");
 		BookingVO bvo = returnRightCode();
@@ -88,16 +98,24 @@ public class BookingRegisterManager {
 		BookingPrint.printByCode(bvo);
 		System.out.println("=======================================================================================================================================================================");
 		bvo = new BookingVO(bvo.getNo(), bvo.getPlaying_no(), bvo.getCustomer_no(), bvo.getCode(), 0, bvo.getPrice(), null);
-		bookDAO.updateDB(bvo);
-		srm.updateCancleManager(bvo);
 		PlayingPrint.printAll();
 		System.out.println("새로운 상영정보를 입력해주세요.");
 		System.out.print(">>");
-		String playingNo = PlayingRegisterManager.returnRightNo().getNo();
+		pvo = PlayingRegisterManager.returnRightNo();
+		if(pvo.getStatus()==null||!pvo.getStatus().equals("0")) {
+			System.out.println("종료되었거나 상영중입니다.");
+			return;
+		}
 		System.out.println("새로운 인원을 입력해주세요.");
 		System.out.print(">>");
 		int amount = Integer.parseInt(sc.nextLine());
-		bvo = new BookingVO(bvo.getNo(), playingNo, bvo.getCustomer_no(), bvo.getCode(), amount, bvo.getPrice(), null);
+		if(pvo.getRemain()<amount) {
+			System.out.println("예매하려는 인원이 잔여 좌석보다 많습니다.");
+			return;
+		}
+		bookDAO.updateDB(bvo);
+		srm.updateCancleManager(bvo);
+		bvo = new BookingVO(bvo.getNo(), pvo.getNo(), bvo.getCustomer_no(), bvo.getCode(), amount, bvo.getPrice(), null);
 		Boolean Flag = bookDAO.updateDB(bvo);
 		srm.updateBookingManager(bvo);//bvo에 추가된 정보로 좌석을 고른다.
 		System.out.println((Flag) ? "예매가 변경되었습니다." : "실패");
