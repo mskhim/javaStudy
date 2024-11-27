@@ -15,7 +15,7 @@ public class SeatsPrint {
 		HallVO hvo = new HallVO();
 		hvo.setNo(svoList.get(1).getHallNo());
 		hvo = hDAO.returnhvo(hvo);
-		System.out.println("=========================예매 현황=========================");
+		System.out.println("================================예매 현황=====================================");
 		int count = 0;
 		for (SeatsVO data : svoList) {
 			System.out.print("|" + data + "|");
@@ -25,6 +25,7 @@ public class SeatsPrint {
 			}
 
 		}
+		System.out.println("==========================================================================");
 	}
 
 

@@ -6,6 +6,7 @@ public class SeatsVO {
 	private String X;
 	private String Y;
 	private String customerNo ;
+	private String bookingNo ;
 	
 	
 
@@ -27,13 +28,27 @@ public class SeatsVO {
 
 	
 
-	public SeatsVO(String playingNo, String hallNo, String x, String y, String status) {
+
+
+
+	public String getBookingNo() {
+		return bookingNo;
+	}
+
+
+	public void setBookingNo(String bookingNo) {
+		this.bookingNo = bookingNo;
+	}
+
+
+	public SeatsVO(String playingNo, String hallNo, String x, String y, String customerNo, String bookingNo) {
 		super();
 		this.playingNo = playingNo;
 		this.hallNo = hallNo;
 		X = x;
 		Y = y;
-		this.customerNo = status;
+		this.customerNo = customerNo;
+		this.bookingNo = bookingNo;
 	}
 
 

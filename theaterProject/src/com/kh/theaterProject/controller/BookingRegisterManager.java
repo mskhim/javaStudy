@@ -15,7 +15,7 @@ public class BookingRegisterManager {
 	
 
 	
-	//예매기능-- 이용시 CustomerVO를 넣어서 입력
+	//예매기능-- 이용시 CustomerVO를 넣어서 입력 >> 
 	public void bookingManager(CustomerVO cvo) throws SQLException {
 		SeatsRegisterManager srm = new SeatsRegisterManager();
 			System.out.println("환영합니다. "+cvo.getName()+"고객님.");
@@ -27,9 +27,9 @@ public class BookingRegisterManager {
 			System.out.print(">>");
 			int amount = Integer.parseInt(sc.nextLine());
 			BookingVO bvo = new BookingVO(null, pvo.getNo(), cvo.getNo(), amount, null);//bvo에 정보 추가
-			srm.updateBookingManager(bvo);//bvo에 추가된 정보로 좌석을 고른다.
 			boolean flag = bookDAO.insertDB(bvo);//Bookingtable에 정보 추가
 			bvo=bookDAO.returnLastbvo(bvo);//마지막에 추가한 bvo를 반환
+			srm.updateBookingManager(bvo);//bvo에 추가된 정보로 좌석을 고른다.
 			System.out.println((flag) ? "예매가 완료되었습니다. 예매 코드는"+bvo.getCode()+"입니다." : "예매에 실패하였습니다.");
 	}
 	
@@ -78,7 +78,7 @@ public class BookingRegisterManager {
 
 	}
 	
-	// 업데이트
+	// 예매 변경과정은 코드를받아서 확인, 해당 예약에 맞는 좌석정보는 삭제후 재입력.
 	public void updateManager() throws SQLException {
 		BookingDAO bookDAO = new BookingDAO();
 		SeatsRegisterManager srm = new SeatsRegisterManager();
@@ -98,8 +98,8 @@ public class BookingRegisterManager {
 		System.out.print(">>");
 		int amount = Integer.parseInt(sc.nextLine());
 		bvo = new BookingVO(bvo.getNo(), playingNo, bvo.getCustomer_no(), bvo.getCode(), amount, bvo.getPrice(), null);
-		srm.updateBookingManager(bvo);//bvo에 추가된 정보로 좌석을 고른다.
 		Boolean Flag = bookDAO.updateDB(bvo);
+		srm.updateBookingManager(bvo);//bvo에 추가된 정보로 좌석을 고른다.
 		System.out.println((Flag) ? "예매가 변경되었습니다." : "실패");
 	}
 
@@ -119,9 +119,10 @@ public class BookingRegisterManager {
 		System.out.print(">>");
 		int amount = Integer.parseInt(sc.nextLine());
 		BookingVO bvo = new BookingVO(null, playingNo, customerNo, amount, null);
-		srm.updateBookingManager(bvo);
 		boolean flag = bookDAO.insertDB(bvo);
-		System.out.println((flag) ? "입력성공" : "입력실패");
+		bookDAO.returnLastbvo(bvo);
+		srm.updateBookingManager(bvo);
+		System.out.println((flag) ? "입력성공 : "+bvo.getCode() : "입력실패");
 	}
 
 	// 찾기
@@ -132,7 +133,7 @@ public class BookingRegisterManager {
 		System.out.print(">>");
 		String code = sc.nextLine();
 		bvo.setCode(code);
-		bvo = cusDAO.returnCodebvo(bvo);
+		bvo = cusDAO.returnByCodebvo(bvo);
 		if (bvo.getNo() != null) {
 			System.out.println("=======================================================================================================================================================================");
 			BookingPrint.printByCode(bvo);
@@ -144,6 +145,7 @@ public class BookingRegisterManager {
 	}
 
 	// 해당 클래스 내부에서만 사용할 함수들
+	
 	// 실행하면 적합한 no가 나올떄까지 반복해서 올바른 BookingVO를 반환해주는 함수
 	private BookingVO returnRightCode() throws SQLException {
 		boolean exitFlag = false;
@@ -154,7 +156,7 @@ public class BookingRegisterManager {
 
 			String code = sc.nextLine();
 			bvo.setCode(code);
-			bvo = bookDAO.returnCodebvo(bvo);
+			bvo = bookDAO.returnByCodebvo(bvo);
 			if (bvo.getPlaying_no() != null) {
 				exitFlag = true;
 

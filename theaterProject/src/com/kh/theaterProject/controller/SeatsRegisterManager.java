@@ -11,13 +11,8 @@ import com.kh.theaterProject.view.SeatsPrint;
 public class SeatsRegisterManager {
 	public static Scanner sc = new Scanner(System.in);
 
-	// 출력
-	public void selectManager() throws SQLException {
-		
-		
-	}
 	
-	// seats를 업데이트 하는데 CustomerVO와, PALYINGVO를 받아서 customerNO, playingNo, amount, 사용할 예정임.
+	// seats를 업데이트 하는데 CustomerVO와, PALYINGVO를 받아서 customerNO, playingNo, amount, 사용, 마지막에 .
 	public void updateBookingManager(BookingVO bvo) throws SQLException {
 		SeatsDAO sDAO = new SeatsDAO();
 		ArrayList<SeatsVO> svoList = new ArrayList<SeatsVO>();
@@ -33,6 +28,7 @@ public class SeatsRegisterManager {
 			for(SeatsVO data : svoList) {
 				if((data.getX()+data.getY()+"").equals(seat)&&data.getCustomerNo()==null) {
 					data.setCustomerNo(bvo.getCustomer_no());
+					data.setBookingNo(bvo.getNo());
 					svoList.set(listCount, data);
 					exitFlag=true;
 				}
@@ -55,14 +51,14 @@ public class SeatsRegisterManager {
 		svoList = returnListByBVO(bvo);
 			int listCount=0;
 			for(SeatsVO data : svoList) {
-				if(data.getCustomerNo()!=null&&data.getCustomerNo().equals(bvo.getCustomer_no())) {
+				if(data.getCustomerNo()!=null&&data.getBookingNo().equals(bvo.getNo())&&data.getCustomerNo().equals(bvo.getCustomer_no())) {
 					data.setCustomerNo(null);
+					data.setBookingNo(null);
 					svoList.set(listCount, data);
 				}
 				listCount++;
 			}
 			sDAO.updateBookingDB(svoList);
-			SeatsPrint.printAllByList(svoList);
 		}
 	
 	//PlayingVO를 받아서 해당 상영정보에 일치하는 SeatsVO 전체를 ArrayList에 담아서 반환.

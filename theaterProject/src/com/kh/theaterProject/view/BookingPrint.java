@@ -16,20 +16,11 @@ public class BookingPrint {
 		}
 	}
 
-	// 전체 예매순 정렬 고객 리스트를 출력요청
-	public static void printSortAll() throws SQLException {
-		BookingDAO cineDAO = new BookingDAO();
-		System.out.println(BookingVO.getHeader());
-		for (BookingVO data : cineDAO.returnSortList()) {
-			System.out.println(data.toString());
-		}
-	}
-
-	// code가들어있는 bvo를 받아서 그 bvo를 출력
+	// code를 받아서 
 	public static void printByCode(BookingVO bvo) throws SQLException {
 		BookingDAO cineDAO = new BookingDAO();
 		System.out.println(BookingVO.getHeader());
-		System.out.println(cineDAO.returnCodebvo(bvo).toString());
+		System.out.println(cineDAO.returnByCodebvo(bvo).toString());
 
 	}
 

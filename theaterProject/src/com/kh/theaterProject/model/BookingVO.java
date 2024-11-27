@@ -2,6 +2,7 @@ package com.kh.theaterProject.model;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class BookingVO {
 	private String no;// char(5), --PK
@@ -11,12 +12,12 @@ public class BookingVO {
 	private int amount;// number(2) not null, --합계인원
 	private int price;// number(7), --합계가격
 	private Timestamp booking_date;// date not null --예매날짜
-	private String hallName;
+	private String hallNo;
 	private String cineName;
 	private String cusName;
 	private Timestamp startTime;
 	private String status;
-	
+	private ArrayList<String> seatList;
 	
 	public BookingVO() {
 		super();
@@ -32,7 +33,7 @@ public class BookingVO {
 		this.amount = amount;
 		this.price = price;
 		this.booking_date = booking_date;
-		this.hallName = hName;
+		this.hallNo = hName;
 		this.cineName = cName;
 		this.startTime = startTime;
 		this.status = status;
@@ -124,16 +125,20 @@ public class BookingVO {
 		this.booking_date = booking_date;
 	}
 
+	public void setSeatList(ArrayList<String> seatList) {
+		this.seatList = seatList;
+	}
+
 	public static String getHeader() {
-		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-10s", "Code","Customer Name","hall","Cinema Name","Start Time", 
-				"Amount", "Price", "Booking Date","Status");
+		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-15s %-20s", "Code","Customer Name","hall","Cinema Name","Start Time", 
+				"Amount", "Price", "Booking Date","Status","Seats");
 	}
 
 	// 데이터 출력 부분
 	@Override
 	public String toString() {
-		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-10s ", code,cusName,hallName+"관",cineName,formatStartTime(),  amount,
-				price,bookingDateFormat(),getStatusText());
+		return String.format("%-20s %-15s %-15s %-15s %-15s %-10s %-10s %-20s %-15s %-20s", code,cusName,"Hall."+hallNo,cineName,formatStartTime(),  amount,
+				price,bookingDateFormat(),getStatusText(),getSeatList());
 	}
 	
     private String formatStartTime() {
@@ -151,13 +156,20 @@ public class BookingVO {
     
     private String getStatusText() {
         if (status == null) {
-            return "만료";
+            return "-";
         } else {
         if(status.equals("0"))
-        	return "사용예정";
+        	return "Usable";
         else {
-        	return "상영중";
+        	return "Now Showing";
         }
         }
     }
+    private String getSeatList() {
+    	String rVal= "";
+    	for(String data: seatList) {
+    		rVal=rVal+data+" ";
+    	}
+    	return rVal;
+    } 
 }

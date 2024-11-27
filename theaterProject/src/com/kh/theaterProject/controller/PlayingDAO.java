@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import com.kh.theaterProject.model.PlayingVO;
 
 public class PlayingDAO {
-	private final String SELECT_SQL = "select * from PLAING_CINEMA_JOIN  ORDER BY STARTTIME";
-	private final String SELECT_STATUS_NULL_SQL = "select * from PLAING_CINEMA_JOIN WHERE STATUS IS NULL ORDER BY STARTTIME";
+	private final String SELECT_SQL = "select * from PLAING_CINEMA_JOIN  ORDER BY NO";
+	private final String SELECT_STATUS_NULL_SQL = "select * from PLAING_CINEMA_JOIN WHERE STATUS IS NULL ORDER BY NO";
 	private final String SELECT_BY_NO_SQL = "select * from PLAING_CINEMA_JOIN WHERE NO = TO_CHAR(?,'FM000')";
 	private final String SELECT_SORT_SQL = "select * from PLAING_CINEMA_JOIN ORDER BY date";
 	private final String INSERT_SQL = "INSERT INTO Playing(NO,HALL_NO, CINEMA_NO, STARTTIME, REMAIN) "
