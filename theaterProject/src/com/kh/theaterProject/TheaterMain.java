@@ -454,7 +454,7 @@ public class TheaterMain {
 		return false;
 	}
 	
-	//상영정보를 출력후, 선택지로 상영정보의 예매현황을 보여주는 기능
+	//상영정보를 출력후, 선택지로 상영정보의 예매 현황을 보여주는 기능
 	private static void playingSelectMenu() throws SQLException {
 		PlayingRegisterManager prm = new PlayingRegisterManager();
 		PlayingPrint.printAllNotNull();

@@ -162,8 +162,6 @@ public class BookingRegisterManager {
 
 	}
 
-	// 해당 클래스 내부에서만 사용할 함수들
-	
 	// 실행하면 적합한 no가 나올떄까지 반복해서 올바른 BookingVO를 반환해주는 함수
 	private BookingVO returnRightCode() throws SQLException {
 		boolean exitFlag = false;
